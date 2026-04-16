@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/outline_home_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/healthInformationFragment"
+        android:icon="@drawable/ic_chart_24"
+        android:title="Health Info" />
+    <item
+        android:id="@+id/addLogFragment"
+        android:icon="@drawable/outline_add_24"
+        android:title="Add Log" />
+    <item
+        android:id="@+id/medicationsFragment"
+        android:icon="@drawable/outline_diagnosis_24"
+        android:title="Medications" />
+    <item
+        android:id="@+id/logsFragment"
+        android:icon="@drawable/outline_menu_24"
+        android:title="Logs" />
+</menu>
