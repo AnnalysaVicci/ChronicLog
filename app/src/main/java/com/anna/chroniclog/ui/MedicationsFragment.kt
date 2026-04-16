@@ -54,11 +54,6 @@ class MedicationsFragment : Fragment() {
             allMedicationsAdapter.updateMedications(medications.filter { !it.currentlyTaking })
         }
 
-        val testMeds = listOf(
-            Medication(id = "1", name="lamictal", dosage = "20mg", frequency = "/day", adherence = "I never miss a dose", startDate = "10/10/2010", endDate = "10/10/2011", currentlyTaking = false),
-            Medication(id = "2", name="prozac", dosage = "5mg", frequency = "/day", adherence = "I never miss a dose", startDate = "10/10/2012", endDate = "10/20/2012", currentlyTaking = false),
-            Medication(id = "3", name="bc", dosage = "3mg", frequency = "/day", adherence = "I never miss a dose", startDate = "10/10/2010", currentlyTaking = true)
-        )
         //medicationsAdapter.updateMedications(testMeds)
         //currentMedicationsAdapter.updateMedications(testMeds.filter { it.currentlyTaking })
         //allMedicationsAdapter.updateMedications(testMeds.filter { !it.currentlyTaking })

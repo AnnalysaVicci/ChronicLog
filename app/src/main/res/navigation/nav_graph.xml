@@ -15,7 +15,11 @@
     <fragment
         android:id="@+id/healthInformationFragment"
         android:name="com.anna.chroniclog.ui.HealthInformationFragment"
-        android:label="Health Info" />
+        android:label="Health Info" >
+        <action
+            android:id="@+id/action_healthInformationFragment_to_editHealthInformationFragment"
+            app:destination="@+id/editHealthInformationFragment" />
+    </fragment>
     <!-- Add Log -->
     <fragment
         android:id="@+id/addLogFragment"

@@ -53,7 +53,7 @@ class MainViewModel : ViewModel() {
         val testLogs = listOf(
             LogEntry(id = "1", date = "April 12, 2026", sentiment = "😊"),
             LogEntry(id = "2", date = "April 11, 2026", sentiment = "😐"),
-            LogEntry(id = "3", date = "April 11, 2026", sentiment = "😐")
+            LogEntry(id = "3", date = "April 10, 2026", sentiment = "😐")
         )
         _logs.value = testLogs
     }
@@ -88,6 +88,9 @@ class MainViewModel : ViewModel() {
     fun saveUserProfile(age: Int, sex: String) {
         _userAge.value = age
         _userSex.value = sex
+        //_userProfile.value = UserProfile(age, sex)
+        // save to fire store w/ repo
+        //healthRepository.saveUserData(age, sex)
     }
 
     fun addLog(newLog: LogEntry) {

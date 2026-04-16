@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.anna.chroniclog.MainViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.anna.chroniclog.databinding.FragmentHomeBinding
+import kotlin.getValue
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -22,6 +26,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // check if onboarding is needed
+        //if (viewModel.userProfile.value == null) {
+            //val onboardingDialog = OnboardingDialogFragment()
+            //onboardingDialog.show(parentFragmentManager, "OnboardingDialog")
+        //}
+        if (viewModel.userAge.value == null) {
+            val onboardingDialog = OnboardingDialogFragment()
+            onboardingDialog.show(parentFragmentManager, "OnboardingDialog")
+        }
 
         // Greet User
         val user = FirebaseAuth.getInstance().currentUser

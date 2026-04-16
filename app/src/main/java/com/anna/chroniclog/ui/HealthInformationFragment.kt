@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.adapter.LogsAdapter
@@ -40,6 +41,13 @@ class HealthInformationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+        // nav to edit health info frag
+        binding.btnEditHealthInfo.setOnClickListener {
+            findNavController().navigate(HealthInformationFragmentDirections.actionHealthInformationFragmentToEditHealthInformationFragment())
+        }
+
         // setup symptom RecyclerView
         symptomAdapter = SymptomAdapter(symptoms) { position ->
             symptoms.removeAt(position)
@@ -53,8 +61,6 @@ class HealthInformationFragment : Fragment() {
         binding.rvCurrentMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
 
-        // observe ViewModel - don't know if I need this
-        //viewModel.symptoms.observe(viewLifecycleOwner) { symptoms -> SymptomAdapter.updateSymptoms(symptoms) }
         viewModel.symptoms.observe(viewLifecycleOwner) { updatedList ->
             symptoms.clear()
             symptoms.addAll(updatedList)

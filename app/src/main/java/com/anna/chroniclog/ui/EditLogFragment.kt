@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.anna.chroniclog.R
 import com.anna.chroniclog.adapter.RemediationAdapter
 import com.anna.chroniclog.adapter.SymptomAdapter
 import com.google.firebase.auth.FirebaseAuth

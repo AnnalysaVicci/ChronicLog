@@ -32,7 +32,7 @@ class SettingsFragment : Fragment() {
                 menu.clear()
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Do nothing when settings is clicked
+                // do nothing when settings is clicked
                 return false
             }
         }, viewLifecycleOwner)
@@ -42,12 +42,21 @@ class SettingsFragment : Fragment() {
         initMenu()
 
         val user = FirebaseAuth.getInstance().currentUser
-        binding.tvUsername.text = if (user?.displayName.isNullOrEmpty()) "No Username" else user.displayName
-        binding.tvEmail.text = user?.email
+        binding.tvUsername.text = if (user?.displayName.isNullOrEmpty()) "No Username" else "Logged in User: ${user.displayName}"
+        binding.tvEmail.text = "User email: ${user?.email}"
 
         binding.btnLogOut.setOnClickListener {
+            // signout of firebase
             FirebaseAuth.getInstance().signOut()
-            //startActivity(Intent(this, LoginActivity::class.java))
+
+            // start loginactivity
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+
+            // clear backstack so user can't back into app
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            startActivity(intent)
+            requireActivity().finish()
         }
     }
 

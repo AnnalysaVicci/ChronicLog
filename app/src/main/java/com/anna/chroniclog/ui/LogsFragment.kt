@@ -44,12 +44,6 @@ class LogsFragment : Fragment() {
         viewModel.logs.observe(viewLifecycleOwner) {
             logs -> logsAdapter.updateLogs(logs) }
 
-        /* val testLogs = listOf(
-            LogEntry(id = "1", date = "April 12, 2026", sentiment = "😊"),
-            LogEntry(id = "2", date = "April 11, 2026", sentiment = "😐"),
-            LogEntry(id = "2", date = "April 11, 2026", sentiment = "😐")
-            )
-        logsAdapter.updateLogs(testLogs) */
     }
 
     override fun onDestroyView() {

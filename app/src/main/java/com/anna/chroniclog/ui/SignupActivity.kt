@@ -51,7 +51,11 @@ class SignupActivity : AppCompatActivity() {
                         .build()
                     auth.currentUser?.updateProfile(profileUpdates)
 
-                    startActivity(Intent(this, MainActivity::class.java))
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("SHOW_ONBOARDING", true)
+                    startActivity(intent)
+
+                    //startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
                 .addOnFailureListener {
