@@ -14,8 +14,11 @@ import com.anna.chroniclog.model.Remediation
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
+    private val _userAge = MutableLiveData<Int>()
+    val userAge: LiveData<Int> get() = _userAge
 
-    // private mutable data (so only the ViewModel can change it)
+    private val _userSex = MutableLiveData<String>()
+    val userSex: LiveData<String> get() = _userSex
     private val _logs = MutableLiveData<List<LogEntry>>()
     val logs: LiveData<List<LogEntry>> get() = _logs
     private val _medications = MutableLiveData<List<Medication>>()
@@ -80,6 +83,11 @@ class MainViewModel : ViewModel() {
             Remediation(id = "3", name = "Dietary", outcome = "Hurt", logId = "3")
         )
         _remediations.value = testRemediations
+    }
+
+    fun saveUserProfile(age: Int, sex: String) {
+        _userAge.value = age
+        _userSex.value = sex
     }
 
     fun addLog(newLog: LogEntry) {

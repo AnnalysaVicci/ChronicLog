@@ -13,10 +13,15 @@ import kotlin.getValue
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
-
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class AddMedicationFragment : Fragment() {
+    // trying to make drugsiggestion faster
+    private var searchJob: kotlinx.coroutines.Job? = null
     private var _binding: FragmentAddMedicationBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
@@ -32,20 +37,33 @@ class AddMedicationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // handle openfda med auto complete
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
-        binding.medNameInput.setAdapter(adapter)
-        binding.medNameInput.threshold = 3
+        val drugAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
+        binding.medNameInput.setAdapter(drugAdapter)
+        binding.medNameInput.threshold = 2
 
         binding.medNameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s?.toString()?.trim() ?: ""
                 if (query.length >= 2) {
-                    viewModel.searchDrugs(query)
+                    searchJob?.cancel()
+                    searchJob = viewLifecycleOwner.lifecycleScope.launch {
+                        delay(300)
+                        viewModel.searchDrugs(query)
+                    }
                 }
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+        // observe results
+        viewModel.drugSuggestions.observe(viewLifecycleOwner) { drugs ->
+            drugAdapter.clear()
+            drugAdapter.addAll(drugs.map {it.getDisplayName() })
+            drugAdapter.notifyDataSetChanged()
+            if (binding.medNameInput.text.isEmpty()) {
+                binding.medNameInput.showDropDown()
+            }
+        }
 
 
 

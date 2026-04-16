@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:text="Welcome! Tell us a bit about yourself."
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Add Age -->
+    <TextView
+        android:text="What is your age?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/etAge"
+        android:inputType="number"
+        android:hint="e.g. 28"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Add Sex -->
+    <TextView
+        android:text="What is your sex?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Spinner
+        android:id="@+id/spinnerSex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Not Ready to Implement -->
+    <!-- Add Chronic Symptoms
+    <TextView
+        android:text="What are your most chronic symptoms?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnAddSymptom"
+        android:text="+ Add Symptom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        -->
+
+    <!-- Symptom Recycler View
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChronicSymptoms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"/>
+        -->
+    <!-- Add Current Medications
+    <TextView
+        android:text="Are you taking any medications?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnAddMedication"
+        android:text="+ Add Medication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    -->
+    <!-- Medication Recycler View
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSymptoms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"/>
+    -->
+
+    <Button
+        android:id="@+id/btnSave"
+        android:text="Get Started"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

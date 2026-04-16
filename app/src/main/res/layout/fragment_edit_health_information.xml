@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp">
 
-    <Button
-        android:id="@+id/btnEditHealthInfo"
-        android:text="Edit Health Info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <TextView
         android:id="@+id/tvAge"
         android:text="Age: "
@@ -24,7 +14,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnEditHealthInfo"/>
+        app:layout_constraintTop_toTopOf="parent"/>
+    <EditText
+        android:id="@+id/etAge"
+        android:hint="your age"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvAge"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvAge" />
 
     <TextView
         android:id="@+id/tvSex"
@@ -36,7 +34,16 @@
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAge" />
+    <Spinner
+        android:id="@+id/spinnerSex"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvSex"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvSex"/>
 
+    <!-- Add Chronic Symptom -->
     <TextView
         android:id="@+id/tvChronicSymptoms"
         android:text="Chronic Symptoms"
@@ -47,15 +54,17 @@
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSex" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSymptoms"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvChronicSymptoms"
+    <TextView
+        android:id="@+id/tvCurrentSymptomsNotice"
+        android:text="this info is generated from your data"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvChronicSymptoms" />
 
+    <!-- not dealing with diagnoses yet
     <TextView
         android:id="@+id/tvDiagnoses"
         android:text="Diagnoses"
@@ -65,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvSymptoms" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentSymptomsNotice" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDiagnoses"
         android:layout_width="0dp"
@@ -74,6 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvDiagnoses"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+        -->
 
     <TextView
         android:id="@+id/tvCurrentMedications"
@@ -84,14 +94,36 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvDiagnoses" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCurrentMedications"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvCurrentMedications"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentSymptomsNotice" />
+    <TextView
+        android:id="@+id/tvCurrentMedicationsNotice"
+        android:text="this info is generated from the medications tab"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentMedications" />
+
+
+    <!-- Save + Cancel Buttons -->
+    <Button
+        android:id="@+id/btnCancel"
+        android:text="Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnSave"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentMedicationsNotice" />
+    <Button
+        android:id="@+id/btnSave"
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentMedicationsNotice" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

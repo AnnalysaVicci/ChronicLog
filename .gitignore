@@ -41,6 +41,11 @@ proguard/
 # Log Files
 *.log
 
+# OS specific
+.DS_Store
+Thumbs.db
+.directory
+
 # Android Studio
 /*/build/
 /*/local.properties

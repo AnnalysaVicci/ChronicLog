@@ -29,9 +29,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // setup toolbar
-        setSupportActionBar(binding.toolbar)
-
         // setup bottom nav bar
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -49,10 +46,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.addLogFragment,
                 R.id.medicationsFragment,
                 R.id.logsFragment
-            )
+            ),
         )
         setupActionBarWithNavController(navController, appBarConfig)
     }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
 
     /*
     // called when settings cog is clicked

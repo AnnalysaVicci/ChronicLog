@@ -65,6 +65,13 @@ class HealthInformationFragment : Fragment() {
             currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking })
         }
 
+        viewModel.userAge.observe(viewLifecycleOwner) { age ->
+            binding.tvAge.text = "Age: $age"
+        }
+        viewModel.userSex.observe(viewLifecycleOwner) { sex ->
+            binding.tvSex.text = "Sex: $sex"
+        }
+
     }
 
     override fun onDestroyView() {

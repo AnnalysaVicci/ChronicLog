@@ -8,6 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+// https://open.fda.gov/apis/openfda-fields/
+
 interface FdaApi {
     // search?search=openfda.brand_name:Lami*&limit=10
     @GET("drug/label.json")
