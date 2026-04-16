@@ -8,6 +8,7 @@ import android.widget.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.adapter.RemediationAdapter
@@ -46,6 +47,10 @@ class AddLogFragment : Fragment() {
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSymptoms.adapter = symptomAdapter
 
+        binding.btnAddSymptom.setOnClickListener {
+            findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddSymptomFragment())
+        }
+
         // setup remediation RecyclerView
         remediationAdapter = RemediationAdapter(remediations) { position ->
             remediations.removeAt(position)
@@ -54,25 +59,29 @@ class AddLogFragment : Fragment() {
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter
 
-        binding.rgMood.setOnCheckedChangeListener { group, i ->
-            val radioButton = binding.rgMood.findViewById<RadioButton>(i)
+        binding.btnAddRemediation.setOnClickListener {
+            findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddRemediationFragment())
+        }
+
+        //binding.rgMood.setOnCheckedChangeListener { group, i ->
+            //val radioButton = binding.rgMood.findViewById<RadioButton>(i)
+        //}
+        binding.rgMood.setOnCheckedChangeListener { group, checkedId ->
+            // Loop through all buttons to reset their alpha/transparency
+            for (i in 0 until group.childCount) {
+                val rb = group.getChildAt(i) as RadioButton
+                rb.alpha = if (rb.id == checkedId) 1.0f else 0.5f
+            }
         }
 
         binding.btnCancel.setOnClickListener {
             // close add log view, go back to previous screen
-            requireActivity().onBackPressedDispatcher.onBackPressed()
             viewModel.clearTempData()
-            parentFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
 
         binding.btnAdd.setOnClickListener {
-            // leave add log view but save data
-            // need to create log with associated date and sentiment for logs fragment
-            // need to use symptoms and remediation data for trends
-            // save log to firestore
             saveLog()
-            viewModel.clearTempData()
-            parentFragmentManager.popBackStack()
         }
 
         // observe symptoms from ViewModel
@@ -109,11 +118,7 @@ class AddLogFragment : Fragment() {
         val notes = binding.etEditNotes.text.toString().trim()
 
         if (mood.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Please rate your day",
-                android.widget.Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), "Please rate your day", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -126,6 +131,9 @@ class AddLogFragment : Fragment() {
             notes = notes
         )
         viewModel.addLog(log)
+
+        viewModel.clearTempData()
+        parentFragmentManager.popBackStack()
     }
 
     override fun onDestroyView() {

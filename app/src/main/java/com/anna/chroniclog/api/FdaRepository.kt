@@ -2,8 +2,7 @@ package com.anna.chroniclog.api
 
 class FdaRepository(private val FdaApi: FdaApi) {
     private val allowedProductTypes = setOf(
-        "HUMAN PRESCRIPTION DRUG",
-        "HUMAN OTC DRUG"
+        "HUMAN PRESCRIPTION DRUG"
     )
 
     private fun extractDrugs(response: FdaApi.FdaResponse): List<FdaDrug> {

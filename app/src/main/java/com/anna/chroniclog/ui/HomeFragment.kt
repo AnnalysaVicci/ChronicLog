@@ -28,14 +28,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // check if onboarding is needed
-        //if (viewModel.userProfile.value == null) {
-            //val onboardingDialog = OnboardingDialogFragment()
-            //onboardingDialog.show(parentFragmentManager, "OnboardingDialog")
-        //}
-        if (viewModel.userAge.value == null) {
-            val onboardingDialog = OnboardingDialogFragment()
-            onboardingDialog.show(parentFragmentManager, "OnboardingDialog")
-        }
+        //viewModel.checkIfProfileExists().observe(viewLifecycleOwner) { exists ->
+            //if (!exists) { OnboardingDialogFragment().show(parentFragmentManager, "onboarding") } }
+        // if user exists without a username/age/sex, make them make one
 
         // Greet User
         val user = FirebaseAuth.getInstance().currentUser

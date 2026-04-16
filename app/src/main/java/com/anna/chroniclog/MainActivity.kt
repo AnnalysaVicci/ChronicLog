@@ -1,13 +1,10 @@
 package com.anna.chroniclog
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.anna.chroniclog.databinding.ActivityMainBinding
-import com.anna.chroniclog.ui.LoginActivity
-import com.google.firebase.auth.FirebaseAuth
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -15,7 +12,6 @@ import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.findNavController
 import com.anna.chroniclog.ui.OnboardingDialogFragment
 
 class MainActivity : AppCompatActivity() {
@@ -61,7 +57,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 
     /*
     fun logout() {

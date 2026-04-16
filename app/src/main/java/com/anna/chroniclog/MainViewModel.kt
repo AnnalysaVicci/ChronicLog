@@ -7,13 +7,18 @@ import androidx.lifecycle.viewModelScope
 import com.anna.chroniclog.api.FdaApi
 import com.anna.chroniclog.api.FdaDrug
 import com.anna.chroniclog.api.FdaRepository
+import com.anna.chroniclog.data.HealthRepository
 import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Symptom
 import com.anna.chroniclog.model.Remediation
 import kotlinx.coroutines.launch
+import kotlinx.serialization.descriptors.mapSerialDescriptor
 
 class MainViewModel : ViewModel() {
+    //private val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+    //private val uid get() = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
+    private val healthRepository = HealthRepository()
     private val _userAge = MutableLiveData<Int>()
     val userAge: LiveData<Int> get() = _userAge
 
@@ -43,29 +48,34 @@ class MainViewModel : ViewModel() {
 
     init {
         // load initial data immediately
-        loadDefaultLogs()
-        loadDefaultMeds()
+        loadUserProfile()
+        loadLogs()
+        loadMedications()
+        //loadDefaultLogs()
+        //loadDefaultMeds()
         loadDefaultSymptoms()
         loadDefaultRemediations()
     }
 
-    private fun loadDefaultLogs() {
+    // test data for LiveData
+    /* private fun loadDefaultLogs() {
         val testLogs = listOf(
             LogEntry(id = "1", date = "April 12, 2026", sentiment = "😊"),
             LogEntry(id = "2", date = "April 11, 2026", sentiment = "😐"),
             LogEntry(id = "3", date = "April 10, 2026", sentiment = "😐")
         )
         _logs.value = testLogs
-    }
+    } */
 
-    private fun loadDefaultMeds() {
+    // test data for LiveData
+    /*private fun loadDefaultMeds() {
         val testMeds = listOf(
             Medication(id = "1", name="Lamictal", dosage = "20mg", frequency = "1/day", adherence = "I never miss a dose", startDate = "10/10/2010", endDate = "10/10/2011", currentlyTaking = false),
             Medication(id = "2", name="Prozac", dosage = "5mg", frequency = "2/day", adherence = "I never miss a dose", startDate = "10/10/2012", endDate = "10/20/2012", currentlyTaking = false),
             Medication(id = "3", name="Birth Control", dosage = "3mg", frequency = "1/day", adherence = "I never miss a dose", startDate = "10/10/2010", currentlyTaking = true)
         )
         _medications.value = testMeds
-    }
+    } */
 
     private fun loadDefaultSymptoms() {
         val testSymptoms = listOf(
@@ -90,7 +100,14 @@ class MainViewModel : ViewModel() {
         _userSex.value = sex
         //_userProfile.value = UserProfile(age, sex)
         // save to fire store w/ repo
-        //healthRepository.saveUserData(age, sex)
+        healthRepository.saveUserData(age, sex)
+    }
+
+    fun loadUserProfile() {
+        healthRepository.loadUserData { age, sex ->
+            _userAge.postValue(age)
+            _userSex.postValue(sex)
+        }
     }
 
     fun addLog(newLog: LogEntry) {
@@ -101,13 +118,24 @@ class MainViewModel : ViewModel() {
         // save symptoms from log to main symptoms list
         val currentSymptoms = _symptoms.value ?: emptyList()
         _symptoms.value = currentSymptoms + newLog.symptoms
+
+        // firestore
+        healthRepository.saveLog(newLog)
     }
     fun deleteLog(logId: String) {
         _logs.value = _logs.value?.filter { it.id != logId}
+        // firestore
+        healthRepository.deleteLog(logId)
     }
     fun updateLog(updatedLog: LogEntry) {
         _logs.value = _logs.value?.map {
             if (it.id == updatedLog.id) updatedLog else it
+        }
+    }
+    // FireStore data
+    private fun loadLogs() {
+        healthRepository.loadLogs { logs ->
+            _logs.postValue(logs)
         }
     }
 
@@ -115,13 +143,23 @@ class MainViewModel : ViewModel() {
     fun addMedication(newMed: Medication) {
         val currentList = _medications.value ?: emptyList()
         _medications.value = currentList + newMed
+        // firestore
+        healthRepository.saveMedication(newMed)
     }
     fun deleteMedication(medId: String) {
         _medications.value = _medications.value?.filter { it.id != medId}
+        // firestore
+        //healthRepository.deleteMedication(medId)
     }
     fun updateMedication(updatedMed: Medication) {
         _medications.value = _medications.value?.map {
             if (it.id == updatedMed.id) updatedMed else it
+        }
+    }
+    // FireStore data
+    private fun loadMedications() {
+        healthRepository.loadMedications { meds ->
+            _medications.postValue(meds)
         }
     }
 

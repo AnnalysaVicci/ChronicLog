@@ -26,6 +26,7 @@ class SymptomAdapter(
 
         holder.binding.apply {
             tvSymptomName.text = symptom.name
+            tvSymptomSeverity.text = "${symptom.severity}/10"
             //btnRemoveSymptom.setOnClickListener {onRemove(holder.bindingAdapterPosition)}
         }
     }

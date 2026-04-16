@@ -38,7 +38,7 @@ class AddSymptomFragment : Fragment(R.layout.fragment_add_symptom) {
         // Set threshold to 1 so suggestions appear after typing one letter
         binding.atvSymptom.threshold = 1
 
-        // setup SeekBar listener (Optional: show number to user)
+        // setup SeekBar listener
         binding.seekbarSeverity.max = 10
 
         binding.btnCancel.setOnClickListener {
@@ -52,8 +52,13 @@ class AddSymptomFragment : Fragment(R.layout.fragment_add_symptom) {
     }
 
     private fun saveSymptom() {
+        val symptomName = binding.atvSymptom.text.toString().trim()
+        if (symptomName.isEmpty()) {
+            binding.atvSymptom.error = "Please enter or select a symptom"
+            return
+        }
         val symptom = Symptom(
-            name = binding.atvSymptom.isSelected.toString(),
+            name = symptomName,
             severity = binding.seekbarSeverity.progress
         )
         // symptoms before the final Log is saved

@@ -12,6 +12,7 @@
             android:id="@+id/tvMedicationName"
             android:text="Medication Name: "
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/medNameInput"
@@ -30,6 +31,7 @@
             android:id="@+id/tvDosage"
             android:text="Dosage: "
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +49,7 @@
             android:id="@+id/tvFreq"
             android:text="Frequency: "
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +67,7 @@
             android:id="@+id/tvAdherence"
             android:text="Adherence:"
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/etFreq"
@@ -78,16 +82,19 @@
             <RadioButton
                 android:id="@+id/never_dose_but"
                 android:text="Never miss a dose"
+                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
                 android:id="@+id/sometimes_dose_but"
                 android:text="Sometimes miss a dose"
+                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
                 android:id="@+id/often_dose_but"
                 android:text="Often miss doses"
+                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RadioGroup>
@@ -96,6 +103,7 @@
             android:id="@+id/tvStartDate"
             android:text="Start: "
             android:textStyle="bold"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/rgAdherence"
@@ -114,6 +122,7 @@
             android:id="@+id/tvEndDate"
             android:text="End: "
             android:textStyle="bold"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/startMedDatePicker"
@@ -131,6 +140,8 @@
         <CheckBox
             android:id="@+id/checkboxCurrentlyTaking"
             android:text="Currently Taking "
+            android:textStyle="bold"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/endMedDatePicker"

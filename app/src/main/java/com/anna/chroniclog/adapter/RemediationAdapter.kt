@@ -27,6 +27,7 @@ class RemediationAdapter(
 
         holder.binding.apply {
             tvRemediationDesc.text = remediation.name
+            tvHelpOrHurt.text = remediation.outcome
             //btnRemoveRemediation.setOnClickListener {onRemove(holder.bindingAdapterPosition)}
         }
     }

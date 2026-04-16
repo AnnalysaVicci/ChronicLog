@@ -24,8 +24,14 @@
     <fragment
         android:id="@+id/addLogFragment"
         android:name="com.anna.chroniclog.ui.AddLogFragment"
-        android:label="Add Log"
-        tools:layout="@layout/fragment_add_log" />
+        android:label="Add Log" >
+        <action
+            android:id="@+id/action_addLogFragment_to_addSymptomFragment"
+            app:destination="@+id/addSymptomFragment" />
+        <action
+            android:id="@+id/action_addLogFragment_to_addRemediationFragment"
+            app:destination="@+id/addRemediationFragment" />
+    </fragment>
     <!-- Medications -->
     <fragment
         android:id="@+id/medicationsFragment"
@@ -102,5 +108,11 @@
             android:name="logId"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/editHealthInformationFragment"
+        android:name="com.anna.chroniclog.ui.EditHealthInformationFragment"
+        android:label="Edit Health info"
+        tools:layout="@layout/fragment_edit_health_information" />
 
 </navigation>

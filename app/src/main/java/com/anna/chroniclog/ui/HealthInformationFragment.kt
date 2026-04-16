@@ -10,11 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
-import com.anna.chroniclog.adapter.LogsAdapter
 import com.anna.chroniclog.adapter.MedicationsAdapter
 import com.anna.chroniclog.adapter.SymptomAdapter
 import com.anna.chroniclog.databinding.FragmentHealthInformationBinding
-import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Symptom
 import com.anna.chroniclog.model.Remediation
@@ -25,7 +23,6 @@ class HealthInformationFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var symptoms = mutableListOf<Symptom>()
-    private val medications = mutableListOf<Medication>()
     private lateinit var symptomAdapter: SymptomAdapter
     private lateinit var currentMedicationsAdapter: MedicationsAdapter
 
@@ -40,8 +37,6 @@ class HealthInformationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         // nav to edit health info frag
         binding.btnEditHealthInfo.setOnClickListener {
@@ -61,14 +56,9 @@ class HealthInformationFragment : Fragment() {
         binding.rvCurrentMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
 
-        viewModel.symptoms.observe(viewLifecycleOwner) { updatedList ->
-            symptoms.clear()
-            symptoms.addAll(updatedList)
-            symptomAdapter.updateSymptoms(updatedList)
-        }
-
         viewModel.medications.observe(viewLifecycleOwner) { updatedMeds ->
-            currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking })
+            //currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking })
+            currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking})
         }
 
         viewModel.userAge.observe(viewLifecycleOwner) { age ->

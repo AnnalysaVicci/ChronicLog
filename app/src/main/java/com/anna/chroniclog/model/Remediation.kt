@@ -1,8 +1,11 @@
 package com.anna.chroniclog.model
 
+import java.util.UUID
+
 data class Remediation(
-    val id: String = "",
+    val id: String = UUID.randomUUID().toString(),
     val name: String = "",
-    val outcome: String = "",  // "Helped", "Hurt", "Neutral"
+    //val description: String = "",
+    val outcome: String = "",
     val logId: String = ""
 )

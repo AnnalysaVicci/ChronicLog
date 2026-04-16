@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_margin="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,25 +15,16 @@
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/menuRemediationCategory"
+            app:layout_constraintBottom_toBottomOf="@id/atvCategory"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/menuRemediationCategory"/>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/menuRemediationCategory"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            app:layout_constraintTop_toTopOf="@id/atvCategory"/>
+        <AutoCompleteTextView
+            android:id="@+id/atvCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Category (e.g. Medication)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvCategory"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <AutoCompleteTextView
-                android:id="@+id/autoCompleteCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvCategory" />
 
         <TextView
             android:id="@+id/tvDescribe"
@@ -43,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/menuRemediationCategory" />
+            app:layout_constraintTop_toBottomOf="@id/atvCategory" />
         <EditText
             android:id="@+id/etDescription"
             android:hint="describe the remedy"

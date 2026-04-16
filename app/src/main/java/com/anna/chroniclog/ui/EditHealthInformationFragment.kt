@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.databinding.FragmentEditHealthInformationBinding
 
@@ -16,7 +17,6 @@ import com.anna.chroniclog.databinding.FragmentEditHealthInformationBinding
 class EditHealthInformationFragment : Fragment() {
     private var _binding: FragmentEditHealthInformationBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -35,22 +35,30 @@ class EditHealthInformationFragment : Fragment() {
         binding.spinnerSex.adapter = adapter
 
         // pre-fill age and sex info
-        viewModel.userAge.observe(viewLifecycleOwner) { age ->
-            if (age != null) binding.etAge.setText(age.toString())
+        //viewModel.userAge.observe(viewLifecycleOwner) { age ->
+            //if (age != null) binding.etAge.setText(age.toString())
+        //}
+        viewModel.userAge.value?.let { age ->
+            binding.etAge.setText(age.toString())
         }
-        viewModel.userSex.observe(viewLifecycleOwner) { sex ->
+        /* viewModel.userSex.observe(viewLifecycleOwner) { sex ->
             if (!sex.isNullOrEmpty()) {
                 val index = sexOptions.indexOf(sex)
                 if (index >= 0) binding.spinnerSex.setSelection(index)
             }
+        } */
+        viewModel.userSex.value?.let { sex ->
+            val index = sexOptions.indexOf(sex)
+            if (index >= 0) binding.spinnerSex.setSelection(index)
         }
 
         binding.btnCancel.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().popBackStack()
         }
 
         binding.btnSave.setOnClickListener {
             saveHealthInfo()
+            findNavController().popBackStack()
         }
     }
 
@@ -70,7 +78,6 @@ class EditHealthInformationFragment : Fragment() {
 
         viewModel.saveUserProfile(age, sex)
         Toast.makeText(requireContext(), "Health info saved", Toast.LENGTH_SHORT).show()
-        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     override fun onDestroyView() {

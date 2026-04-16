@@ -26,7 +26,7 @@
             android:textStyle="bold"
             android:text="symptom_name" />
 
-        <!-- Sentiment on the right -->
+        <!-- Severity -->
         <TextView
             android:id="@+id/tvSymptomSeverity"
             android:layout_width="wrap_content"
