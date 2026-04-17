@@ -205,7 +205,26 @@ class HealthRepository {
                 }
             }
     }
-
+    fun getSymptomSummary(onResult: (Map<String, Int>) -> Unit) {
+        val uid = userId ?: return
+        db.collection("users").document(uid)
+            .collection("aggregates").document("symptom_stats")
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    // firestore stores numbers as Long, but we need Int for the chart
+                    val rawData = doc.get("frequencies") as? Map<String, Long> ?: emptyMap()
+                    val convertedData = rawData.mapValues { it.value.toInt() }
+                    onResult(convertedData)
+                } else {
+                    onResult(emptyMap())
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error fetching summary", e)
+                onResult(emptyMap())
+            }
+    }
     // searching for every symptom in every log will get expensive
     // symptom_stats will hold user's symptoms
     fun updateSymptomSummary(symptoms: List<Symptom>) {

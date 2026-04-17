@@ -4,15 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.databinding.ItemMedicationBinding
 import com.anna.chroniclog.model.Medication
+import kotlin.getValue
 
 class MedicationsAdapter(
     private var medications: List<Medication>,
     private val onItemClick: (Medication) -> Unit
     //private val onEditClick: (Medication) -> Unit
-
 ) : RecyclerView.Adapter<MedicationsAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemMedicationBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -39,6 +41,8 @@ class MedicationsAdapter(
             checkboxCurrentlyTaking.isChecked = medication.currentlyTaking
             tvEndDate.text = if (medication.currentlyTaking) "" else "Ended: ${medication.endDate}"
             tvEndDate.visibility = if (medication.currentlyTaking) View.GONE else View.VISIBLE
+
+            //btnDeleteMed.setOnClickListener {}
 
             // hidden Section logic
             llMedDetails.visibility = if (medication.isExpanded) View.VISIBLE else View.GONE

@@ -8,27 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.adapter.RemediationAdapter
 import com.anna.chroniclog.adapter.SymptomAdapter
 import com.anna.chroniclog.databinding.FragmentLogBinding
 import com.anna.chroniclog.model.Remediation
 import com.anna.chroniclog.model.Symptom
+import kotlin.getValue
 
 class LogFragment : Fragment() {
-
     private var _binding: FragmentLogBinding? = null
     private val binding get() = _binding!!
-
     private val symptoms = mutableListOf<Symptom>()
     private val remediations = mutableListOf<Remediation>()
-
     private lateinit var symptomAdapter: SymptomAdapter
     private lateinit var remediationAdapter: RemediationAdapter
-
     private val args: LogFragmentArgs by navArgs()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +43,6 @@ class LogFragment : Fragment() {
 
         val logId = args.logId
 
-        // TODO Week 3: fetch log from Firestore using logId
-        // For now use placeholder data
-        binding.tvDate.text = "April 12, 2026"
-        binding.tvSentiment.text = "😊"
-        binding.tvNotes.text = "Felt okay today, headache in the afternoon."
 
         // setup symptom RecyclerView
         symptomAdapter = SymptomAdapter(symptoms) { position ->
@@ -65,11 +60,18 @@ class LogFragment : Fragment() {
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter
 
+
+
         // navigate to EditLogFragment
         binding.btnEditLog.setOnClickListener {
             val action = LogFragmentDirections
                 .actionLogFragmentToEditLogFragment(logId)
             findNavController().navigate(action)
+        }
+
+        binding.btnDeleteLog.setOnClickListener {
+            viewModel.deleteLog(logId)
+            findNavController().popBackStack()
         }
     }
 

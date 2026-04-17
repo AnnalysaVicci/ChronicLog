@@ -13,11 +13,7 @@ import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Symptom
 import com.anna.chroniclog.model.Remediation
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
-import kotlinx.serialization.descriptors.mapSerialDescriptor
 
 class MainViewModel : ViewModel() {
     private val healthRepository = HealthRepository()
@@ -134,6 +130,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    // SYMPTOMS
     fun addSymptom(newSymptom: Symptom) {
         val currentList = _symptoms.value ?: emptyList()
         _symptoms.value = currentList + newSymptom
