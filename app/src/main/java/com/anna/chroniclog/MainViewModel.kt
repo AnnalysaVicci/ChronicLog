@@ -13,12 +13,13 @@ import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Symptom
 import com.anna.chroniclog.model.Remediation
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 import kotlinx.serialization.descriptors.mapSerialDescriptor
 
 class MainViewModel : ViewModel() {
-    //private val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-    //private val uid get() = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
     private val healthRepository = HealthRepository()
 
     private val _userAge = MutableLiveData<Int>()
@@ -63,46 +64,8 @@ class MainViewModel : ViewModel() {
         loadMedications()
         //loadDefaultLogs()
         //loadDefaultMeds()
-        loadDefaultSymptoms()
-        loadDefaultRemediations()
-    }
-
-    // test data for LiveData
-    /* private fun loadDefaultLogs() {
-        val testLogs = listOf(
-            LogEntry(id = "1", date = "April 12, 2026", sentiment = "😊"),
-            LogEntry(id = "2", date = "April 11, 2026", sentiment = "😐"),
-            LogEntry(id = "3", date = "April 10, 2026", sentiment = "😐")
-        )
-        _logs.value = testLogs
-    } */
-
-    // test data for LiveData
-    /*private fun loadDefaultMeds() {
-        val testMeds = listOf(
-            Medication(id = "1", name="Lamictal", dosage = "20mg", frequency = "1/day", adherence = "I never miss a dose", startDate = "10/10/2010", endDate = "10/10/2011", currentlyTaking = false),
-            Medication(id = "2", name="Prozac", dosage = "5mg", frequency = "2/day", adherence = "I never miss a dose", startDate = "10/10/2012", endDate = "10/20/2012", currentlyTaking = false),
-            Medication(id = "3", name="Birth Control", dosage = "3mg", frequency = "1/day", adherence = "I never miss a dose", startDate = "10/10/2010", currentlyTaking = true)
-        )
-        _medications.value = testMeds
-    } */
-
-    private fun loadDefaultSymptoms() {
-        val testSymptoms = listOf(
-            Symptom(id = "1", name = "Headache", severity=6, logId = "2"),
-            Symptom(id = "2", name = "Nausea", severity=4, logId = "2"),
-            Symptom(id = "3", name = "Insomnia", severity=9, logId = "2")
-        )
-        _symptoms.value = testSymptoms
-    }
-
-    private fun loadDefaultRemediations() {
-        val testRemediations = listOf(
-            Remediation(id = "1", name = "Medication", outcome = "Helped", logId = "2"),
-            Remediation(id = "2", name = "Physical Therapy", outcome = "Hurt", logId = "2"),
-            Remediation(id = "3", name = "Dietary", outcome = "Hurt", logId = "3")
-        )
-        _remediations.value = testRemediations
+        //loadDefaultSymptoms()
+        //loadDefaultRemediations()
     }
 
     fun saveUserProfile(age: Int, sex: String) {

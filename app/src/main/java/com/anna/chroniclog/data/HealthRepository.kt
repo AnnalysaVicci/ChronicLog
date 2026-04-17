@@ -129,6 +129,9 @@ class HealthRepository {
         // save symptoms and remediations as subcollections of the log
         log.symptoms.forEach { saveSymptom(it, log.id) }
         log.remediations.forEach { saveRemediation(it, log.id) }
+
+        // save symptom to symptom_stats document in firestore
+        updateSymptomSummary(log.symptoms)
     }
 
     fun deleteLog(logId: String) {
@@ -166,7 +169,7 @@ class HealthRepository {
             }
     }
 
-    // Symptom
+    // Symptoms
     private fun saveSymptom(symptom: Symptom, logId: String) {
         val uid = userId ?: return
         val map = hashMapOf(
@@ -181,6 +184,49 @@ class HealthRepository {
             .set(map)
     }
 
+    fun loadAllSymptoms(onResult: (List<Symptom>) -> Unit) {
+        val uid = userId ?: return
+        // collection group query
+        db.collection("users").document(uid).collection("logs").get()
+            .addOnSuccessListener { logsSnapshot ->
+                val allSymptoms = mutableListOf<Symptom>()
+                var tasksProcessed = 0
+
+                if (logsSnapshot.isEmpty) onResult(emptyList())
+
+                for (logDoc in logsSnapshot.documents) {
+                    logDoc.reference.collection("symptoms").get().addOnSuccessListener { symptomSnapshot ->
+                        allSymptoms.addAll(symptomSnapshot.toObjects(Symptom::class.java))
+                        tasksProcessed++
+                        if (tasksProcessed == logsSnapshot.size()) {
+                            onResult(allSymptoms)
+                        }
+                    }
+                }
+            }
+    }
+
+    // searching for every symptom in every log will get expensive
+    // symptom_stats will hold user's symptoms
+    fun updateSymptomSummary(symptoms: List<Symptom>) {
+        val uid = userId ?: return
+        val statsRef = db.collection("users").document(uid)
+            .collection("aggregates").document("symptom_stats")
+
+        val updates = mutableMapOf<String, Any>()
+        symptoms.forEach { symptom ->
+            // This increment happens directly on the server!
+            updates["frequencies.${symptom.name}"] = FieldValue.increment(1)
+        }
+
+        statsRef.update(updates).addOnFailureListener {
+            // If the document doesn't exist yet, use .set() instead
+            statsRef.set(updates)
+        }
+    }
+
+
+    // Remediations
     private fun saveRemediation(remediation: Remediation, logId: String) {
         val uid = userId ?: return
         val map = hashMapOf(
@@ -194,6 +240,24 @@ class HealthRepository {
             .collection("remediations").document(remediation.id)
             .set(map)
     }
+
+    /*
+    fun updateRemediationSummary(remediations: List<Remediation>) {
+        val uid = userId ?: return
+        val statsRef = db.collection("users").document(uid)
+            .collection("aggregates").document("remediation_stats")
+
+        val updates = mutableMapOf<String, Any>()
+        remediation.forEach { remediation ->
+            // This increment happens directly on the server!
+            updates["frequencies.${remediation.name}"] = FieldValue.increment(1)
+        }
+
+        statsRef.update(updates).addOnFailureListener {
+            // If the document doesn't exist yet, use .set() instead
+            statsRef.set(updates)
+        }
+    } */
 
 
 

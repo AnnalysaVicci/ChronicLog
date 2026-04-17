@@ -34,23 +34,6 @@ class AddSymptomFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddSymptomBinding.bind(view)
 
-        /*
-        // list of chronic illness symptoms
-        val commonSymptoms = arrayOf(
-            "Abdominal Pain", "Back Pain", "Brain Fog", "Chest Pain",
-            "Dizziness", "Fatigue", "Headache", "Insomnia",
-            "Joint Pain", "Muscle Weakness", "Nausea", "Shortness of Breath"
-        )
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            commonSymptoms
-        )
-        // Link the adapter to the AutoCompleteTextView
-        binding.atvSymptom.setAdapter(adapter)
-        // Set threshold to 1 so suggestions appear after typing one letter
-        binding.atvSymptom.threshold = 1 */
-
         val reactionAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
         binding.atvSymptom.setAdapter(reactionAdapter)
         binding.atvSymptom.threshold = 3
