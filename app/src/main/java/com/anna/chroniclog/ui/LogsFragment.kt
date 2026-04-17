@@ -44,6 +44,11 @@ class LogsFragment : Fragment() {
         viewModel.logs.observe(viewLifecycleOwner) {
             logs -> logsAdapter.updateLogs(logs) }
 
+        binding.btnAddLog.setOnClickListener {
+            val action = LogsFragmentDirections.actionLogsFragmentToAddLogFragment()
+            findNavController().navigate(action)
+        }
+
     }
 
     override fun onDestroyView() {

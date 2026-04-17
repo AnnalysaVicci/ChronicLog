@@ -14,15 +14,17 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/atvSymptom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/atvSymptom"/>
     <AutoCompleteTextView
         android:id="@+id/atvSymptom"
+        android:hint="type 3 letters for autosearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvSymptom"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvSymptom" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Write in Symptom-->
     <!--
@@ -88,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@id/atvSymptom" />
     <SeekBar
         android:id="@+id/seekbarSeverity"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,6 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekbarSeverity" />
 
+    <!--
     <ScrollView
         android:id="@+id/svSymptomPicture"
         android:layout_width="match_parent"
@@ -120,6 +123,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="Image of Symptom" />
     </ScrollView>
+    -->
 
     <!-- Add + Cancel Buttons -->
     <Button
@@ -130,7 +134,7 @@
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnAdd"
-        app:layout_constraintTop_toBottomOf="@id/svSymptomPicture" />
+        app:layout_constraintTop_toBottomOf="@id/btnAddPicture" />
     <Button
         android:id="@+id/btnAdd"
         android:text="Add"
@@ -139,6 +143,6 @@
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnCancel"
-        app:layout_constraintTop_toBottomOf="@id/svSymptomPicture" />
+        app:layout_constraintTop_toBottomOf="@id/btnAddPicture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

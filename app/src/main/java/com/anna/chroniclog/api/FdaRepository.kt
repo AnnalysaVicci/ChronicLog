@@ -1,6 +1,6 @@
 package com.anna.chroniclog.api
 
-class FdaRepository(private val FdaApi: FdaApi) {
+class FdaRepository(private val fdaApi: FdaApi) {
     private val allowedProductTypes = setOf(
         "HUMAN PRESCRIPTION DRUG"
     )
@@ -24,8 +24,24 @@ class FdaRepository(private val FdaApi: FdaApi) {
         return try {
             // search specifically within brand names using wildcards
             val query = "openfda.brand_name:$searchTerm*"
-            val response = FdaApi.searchDrugs(query)
+            val response = fdaApi.searchDrugs(query)
             extractDrugs(response)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun extractReaction(response: FdaReactionResponse): List<FdaReaction> {
+        return response.results
+            .flatMap { it.patient.reactions } // turns List<List<Reaction>> into List<Reaction>
+            .distinctBy { it.getDisplayName().uppercase() } // case-insensitive duplicate removal
+    }
+
+    suspend fun searchReaction(searchTerm: String): List<FdaReaction> {
+        return try {
+            val query = "patient.reaction.reactionmeddrapt:$searchTerm*"
+            val response = fdaApi.searchReactions(query)
+            extractReaction(response)
         } catch (e: Exception) {
             emptyList()
         }

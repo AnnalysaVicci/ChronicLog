@@ -20,6 +20,11 @@
             android:id="@+id/action_healthInformationFragment_to_editHealthInformationFragment"
             app:destination="@+id/editHealthInformationFragment" />
     </fragment>
+    <!-- Trends -->
+    <fragment
+        android:id="@+id/trendsFragment"
+        android:name="com.anna.chroniclog.ui.TrendsFragment"
+        android:label="Trends" />
     <!-- Add Log -->
     <fragment
         android:id="@+id/addLogFragment"
@@ -49,6 +54,9 @@
         <action
             android:id="@+id/action_logsFragment_to_logFragment"
             app:destination="@+id/logFragment" />
+        <action
+            android:id="@+id/action_logsFragment_to_addLogFragment"
+            app:destination="@+id/addLogFragment" />
     </fragment>
 
     <fragment
@@ -75,12 +83,6 @@
         android:name="com.anna.chroniclog.ui.AddRemediationFragment"
         android:label="Add Remediation"
         tools:layout="@layout/fragment_add_remediation" />
-
-    <fragment
-        android:id="@+id/editMedicationFragment"
-        android:name="com.anna.chroniclog.ui.EditMedicationFragment"
-        android:label="Edit Medication"
-        tools:layout="@layout/fragment_edit_medication" />
 
     <fragment
         android:id="@+id/providerShareFragment"

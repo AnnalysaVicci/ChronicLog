@@ -18,6 +18,12 @@ interface FdaApi {
         @Query("limit") limit: Int = 20
     ): FdaResponse
 
+    @GET("drug/event.json")
+    suspend fun searchReactions(
+        @Query("search") query: String,
+        @Query("limit") limit: Int = 50
+    ): FdaReactionResponse
+
     // Wrapper classes to match OpenFDA's JSON structure
     class FdaResponse(val results: List<FdaResult>)
     class FdaResult(val openfda: FdaDrug?)

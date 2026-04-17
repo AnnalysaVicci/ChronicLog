@@ -8,6 +8,10 @@
         android:icon="@drawable/ic_chart_24"
         android:title="Health Info" />
     <item
+        android:id="@+id/trendsFragment"
+        android:icon="@drawable/baseline_insert_chart_outlined_24"
+        android:title="Trends" />
+    <item
         android:id="@+id/addLogFragment"
         android:icon="@drawable/outline_add_24"
         android:title="Add Log" />

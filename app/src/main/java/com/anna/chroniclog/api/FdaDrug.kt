@@ -14,7 +14,7 @@ data class FdaDrug(
     val productType: List<String>?
 ) : Serializable {
 
-    // Helper to get the first name available for the UI
+    // helper to get the first name available for the UI
     fun getDisplayName(): String {
         return brandNames?.firstOrNull() ?: genericNames?.firstOrNull() ?: "Unknown Drug"
     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anna.chroniclog.api.FdaApi
 import com.anna.chroniclog.api.FdaDrug
+import com.anna.chroniclog.api.FdaReaction
 import com.anna.chroniclog.api.FdaRepository
 import com.anna.chroniclog.data.HealthRepository
 import com.anna.chroniclog.model.LogEntry
@@ -19,31 +20,40 @@ class MainViewModel : ViewModel() {
     //private val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
     //private val uid get() = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
     private val healthRepository = HealthRepository()
+
     private val _userAge = MutableLiveData<Int>()
     val userAge: LiveData<Int> get() = _userAge
 
     private val _userSex = MutableLiveData<String>()
     val userSex: LiveData<String> get() = _userSex
+
     private val _logs = MutableLiveData<List<LogEntry>>()
     val logs: LiveData<List<LogEntry>> get() = _logs
+
     private val _medications = MutableLiveData<List<Medication>>()
     val medications: LiveData<List<Medication>> get() = _medications
+
     private val _symptoms = MutableLiveData<List<Symptom>>(emptyList())
     val symptoms: LiveData<List<Symptom>> get() = _symptoms
+
     private val _remediations = MutableLiveData<List<Remediation>>(emptyList())
     val remediations: LiveData<List<Remediation>> get() = _remediations
 
-    // temp storage for a log in progress
+
     private val _tempSymptoms = MutableLiveData<List<Symptom>>(emptyList())
     val tempSymptoms: LiveData<List<Symptom>> get() = _tempSymptoms
 
+
     private val _tempRemediations = MutableLiveData<List<Remediation>>(emptyList())
     val tempRemediations: LiveData<List<Remediation>> get() = _tempRemediations
+
 
     private val fdaApi = FdaApi.create()
     private val fdaRepository = FdaRepository(fdaApi)
     private val _drugSuggestions = MutableLiveData<List<FdaDrug>>()
     val drugSuggestions: LiveData<List<FdaDrug>> get() = _drugSuggestions
+    private val _reactionSuggestions = MutableLiveData<List<FdaReaction>>()
+    val reactionSuggestions: LiveData<List<FdaReaction>> get() = _reactionSuggestions
 
 
     init {
@@ -98,8 +108,6 @@ class MainViewModel : ViewModel() {
     fun saveUserProfile(age: Int, sex: String) {
         _userAge.value = age
         _userSex.value = sex
-        //_userProfile.value = UserProfile(age, sex)
-        // save to fire store w/ repo
         healthRepository.saveUserData(age, sex)
     }
 
@@ -209,6 +217,12 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             val results = fdaRepository.searchDrugs(name)
             _drugSuggestions.postValue(results)
+        }
+    }
+    fun searchReactions(name: String) {
+        viewModelScope.launch {
+            val results = fdaRepository.searchReaction(name)
+            _reactionSuggestions.postValue(results)
         }
     }
 }

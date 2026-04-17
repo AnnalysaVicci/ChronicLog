@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp">
 
+    <!-- Logs TV -->
     <TextView
         android:id="@+id/tvLogs"
         android:text="Logs"
@@ -13,9 +14,11 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Logs RV -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvLogs"
         android:layout_width="0dp"
@@ -23,6 +26,16 @@
         app:layout_constraintTop_toBottomOf="@id/tvLogs"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Add Log Button -->
+    <ImageButton
+        android:id="@+id/btnAddLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Add Log Button"
+        android:src="@drawable/outline_add_24"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

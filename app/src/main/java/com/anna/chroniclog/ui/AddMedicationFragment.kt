@@ -14,16 +14,17 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
 class AddMedicationFragment : Fragment() {
-    // trying to make drugsiggestion faster
-    private var searchJob: kotlinx.coroutines.Job? = null
+    // trying to make drugsuggestion faster
     private var _binding: FragmentAddMedicationBinding? = null
     private val binding get() = _binding!!
+    private var searchJob: Job? = null
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -65,8 +66,6 @@ class AddMedicationFragment : Fragment() {
             }
         }
 
-
-
         // end date picker vanishes if curr taking box is checked
         binding.checkboxCurrentlyTaking.setOnCheckedChangeListener { _, isChecked ->
             binding.tvEndDate.visibility = if (isChecked) View.GONE else View.VISIBLE
@@ -74,8 +73,7 @@ class AddMedicationFragment : Fragment() {
         }
 
         binding.btnCancel.setOnClickListener {
-            // close add med view, go back to previous screen
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().popBackStack()
         }
 
         binding.btnAdd.setOnClickListener {
@@ -112,7 +110,7 @@ class AddMedicationFragment : Fragment() {
             ).show()
             return
         }
-        requireActivity().onBackPressedDispatcher.onBackPressed()
+        findNavController().popBackStack()
 
         // save to fire store
         val med = Medication(
