@@ -53,9 +53,13 @@ class AddLogFragment : Fragment() {
         }
 
         // setup remediation RecyclerView
+        /*
         remediationAdapter = RemediationAdapter(remediations) { position ->
             remediations.removeAt(position)
             remediationAdapter.notifyItemRemoved(position)
+        } */
+        remediationAdapter = RemediationAdapter(remediations) { remediation ->
+            viewModel.removeTempRemediation(remediation.id)
         }
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter

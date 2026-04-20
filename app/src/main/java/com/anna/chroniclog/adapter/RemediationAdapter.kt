@@ -2,14 +2,15 @@ package com.anna.chroniclog.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.anna.chroniclog.databinding.ItemRemediationBinding
-import com.anna.chroniclog.databinding.ItemSymptomBinding
 import com.anna.chroniclog.model.Remediation
 
 class RemediationAdapter(
     private var remediations: List<Remediation>,
-    private val onRemove: (Int) -> Unit
+    //private val onRemove: (Int) -> Unit
+    private val onRemove: (Remediation) -> Unit
 ) : RecyclerView.Adapter<RemediationAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemRemediationBinding) :
@@ -28,7 +29,10 @@ class RemediationAdapter(
         holder.binding.apply {
             tvRemediationDesc.text = remediation.name
             tvHelpOrHurt.text = remediation.outcome
-            //btnRemoveRemediation.setOnClickListener {onRemove(holder.bindingAdapterPosition)}
+            btnDeleteRemediation.setOnClickListener {
+                //onRemove(holder.bindingAdapterPosition) // passing position
+                onRemove(remediation) // passing the object
+            }
         }
     }
 

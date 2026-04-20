@@ -19,20 +19,30 @@
         <!-- Symptom Name -->
         <TextView
             android:id="@+id/tvSymptomName"
+            android:text="symptom_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="symptom_name" />
+            android:textStyle="bold" />
 
         <!-- Severity -->
         <TextView
             android:id="@+id/tvSymptomSeverity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:textSize="16sp"
             android:text="6/10" />
+
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/btnDeleteSymptom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/outline_delete_24"
+            android:contentDescription="Delete symptom" />
 
     </LinearLayout>
 

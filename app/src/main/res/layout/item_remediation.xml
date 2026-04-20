@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardRemedy"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
@@ -31,9 +32,18 @@
             android:id="@+id/tvHelpOrHurt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:textSize="16sp"
             android:text="Helped" />
 
-    </LinearLayout>
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/btnDeleteRemediation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/outline_delete_24"
+            android:contentDescription="Delete remediation" />
 
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

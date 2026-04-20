@@ -1,12 +1,10 @@
 // LogFragment - screen that shows details of a log that was clicked in LogsFragment screen
 package com.anna.chroniclog.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -52,9 +50,13 @@ class LogFragment : Fragment() {
         binding.rvSymptoms.adapter = symptomAdapter
 
         // setup remediation RecyclerView
+        /*
         remediationAdapter = RemediationAdapter(remediations) { position ->
             remediations.removeAt(position)
             remediationAdapter.notifyItemRemoved(position)
+        } */
+        remediationAdapter = RemediationAdapter(remediations) { remediation ->
+            viewModel.deleteRemediation(remediation.id)
         }
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter

@@ -173,9 +173,15 @@ class MainViewModel : ViewModel() {
         val current = _tempSymptoms.value ?: emptyList()
         _tempSymptoms.value = current + symptom
     }
+    fun removeTempSymptom(symptomId: String) {
+        _tempSymptoms.value = _tempSymptoms.value?.filter { it.id != symptomId }
+    }
     fun addTempRemediation(remediation: Remediation) {
         val current = _tempRemediations.value ?: emptyList()
         _tempRemediations.value = current + remediation
+    }
+    fun removeTempRemediation(remediationId: String) {
+        _tempRemediations.value = _tempRemediations.value?.filter { it.id != remediationId }
     }
     // Call this when the Log is finally saved or cancelled to clear the "cart"
     fun clearTempData() {
