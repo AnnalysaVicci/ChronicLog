@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.adapter.MedicationsAdapter
+import com.anna.chroniclog.adapter.SymptomAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.anna.chroniclog.databinding.FragmentHomeBinding
 import kotlin.getValue
@@ -18,6 +19,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var currentMedicationsAdapter: MedicationsAdapter
+    private lateinit var symptomAdapter: SymptomAdapter
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -30,20 +32,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // check if onboarding is needed
-        //viewModel.checkIfProfileExists().observe(viewLifecycleOwner) { exists ->
-            //if (!exists) { OnboardingDialogFragment().show(parentFragmentManager, "onboarding") } }
-        // if user exists without a username/age/sex, make them make one
-
         // Greet User
         val user = FirebaseAuth.getInstance().currentUser
         binding.tvGreetUser.text = "Welcome, ${user?.displayName ?: user?.email}!"
 
-        binding.btnProviderShare.setOnClickListener {  }
+        // Provider Share Button
+        binding.btnProviderShare.setOnClickListener {}
 
         // nav to edit health info frag
         binding.btnEditHealthInfo.setOnClickListener {
-            findNavController().navigate(HealthInformationFragmentDirections.actionHealthInformationFragmentToEditHealthInformationFragment())
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditHealthInformationFragment())
         }
 
         // observe user's age and sex
@@ -59,9 +57,20 @@ class HomeFragment : Fragment() {
         binding.rvCurrentMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
 
+        // observe current medications
         viewModel.medications.observe(viewLifecycleOwner) { updatedMeds ->
             currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking})
         }
+
+        // setup symptom RecyclerView
+        symptomAdapter = SymptomAdapter(emptyList()) { symptom ->}
+        binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvSymptoms.adapter = symptomAdapter
+
+        // observe chronic symptoms
+        //viewModel.medications.observe(viewLifecycleOwner) { chronicSymptoms ->
+            //symptomAdapter.updateSymptoms(chronicSymptoms.filter {it.})
+        //}
     }
 
     override fun onDestroyView() {

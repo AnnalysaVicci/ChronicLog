@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.anna.chroniclog.MainViewModel
-import com.anna.chroniclog.data.HealthRepository
 import com.anna.chroniclog.databinding.DialogOnboardingBinding
 
 class OnboardingDialogFragment : DialogFragment() {
@@ -37,10 +35,6 @@ class OnboardingDialogFragment : DialogFragment() {
         binding.btnSubmit.setOnClickListener {
             val age = binding.etAge.text.toString()
             val sex = binding.spinnerSex.selectedItem.toString()
-
-            //val repository = HealthRepository()
-            //repository.saveUserData(age.toIntOrNull(),sex)
-            //findNavController().navigate(R.id.action_onboarding_to_home)
 
             if (age.isEmpty() || age.toInt() < 13 || age.toInt()>120 ) {
                 binding.etAge.error = "Please enter a valid age"

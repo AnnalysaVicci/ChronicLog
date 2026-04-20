@@ -9,10 +9,12 @@ import com.anna.chroniclog.api.FdaDrug
 import com.anna.chroniclog.api.FdaReaction
 import com.anna.chroniclog.api.FdaRepository
 import com.anna.chroniclog.data.HealthRepository
+import com.anna.chroniclog.model.ChatMessage
 import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Symptom
 import com.anna.chroniclog.model.Remediation
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -52,6 +54,8 @@ class MainViewModel : ViewModel() {
     private val _reactionSuggestions = MutableLiveData<List<FdaReaction>>()
     val reactionSuggestions: LiveData<List<FdaReaction>> get() = _reactionSuggestions
 
+    private val _chatMessages = MutableLiveData<List<ChatMessage>>()
+    val chatMessages: LiveData<List<ChatMessage>> get() = _chatMessages
 
     init {
         // load initial data
@@ -60,10 +64,8 @@ class MainViewModel : ViewModel() {
         loadMedications()
         loadSymptoms()
         loadRemediations()
-        //loadDefaultLogs()
-        //loadDefaultMeds()
-        //loadDefaultSymptoms()
-        //loadDefaultRemediations()
+        // start chat
+        startChatService()
     }
 
     fun saveUserProfile(age: Int, sex: String) {
@@ -201,5 +203,15 @@ class MainViewModel : ViewModel() {
             val results = fdaRepository.searchReaction(name)
             _reactionSuggestions.postValue(results)
         }
+    }
+
+    // CHAT
+    fun startChatService() {
+        healthRepository.observeGeneralChat { messages ->
+            _chatMessages.postValue(messages)
+        }
+    }
+    fun sendChatMessage(message: ChatMessage) {
+        healthRepository.sendMessage(message)
     }
 }

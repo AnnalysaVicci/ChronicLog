@@ -10,21 +10,92 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.anna.chroniclog.ui.HomeFragment"
-        android:label="Home" />
-    <!-- Health History -->
-    <fragment
-        android:id="@+id/healthInformationFragment"
-        android:name="com.anna.chroniclog.ui.HealthInformationFragment"
-        android:label="Health Info" >
+        android:label="Home" >
         <action
-            android:id="@+id/action_healthInformationFragment_to_editHealthInformationFragment"
+            android:id="@+id/action_homeFragment_to_editHealthInformationFragment"
             app:destination="@+id/editHealthInformationFragment" />
     </fragment>
+
     <!-- Trends -->
     <fragment
         android:id="@+id/trendsFragment"
         android:name="com.anna.chroniclog.ui.TrendsFragment"
-        android:label="Trends" />
+        android:label="Trends"
+        tools:layout="@layout/fragment_trends" />
+
+    <!-- Chat -->
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.anna.chroniclog.ui.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat"/>
+
+
+    <!-- Medications -->
+    <fragment
+        android:id="@+id/medicationsFragment"
+        android:name="com.anna.chroniclog.ui.MedicationsFragment"
+        android:label="Medications" >
+        <action
+            android:id="@+id/action_medicationsFragment_to_addMedicationFragment"
+            app:destination="@+id/addMedicationFragment" />
+    </fragment>
+
+    <!-- Logs -->
+    <fragment
+        android:id="@+id/logsFragment"
+        android:name="com.anna.chroniclog.ui.LogsFragment"
+        android:label="Logs" >
+        <action
+            android:id="@+id/action_logsFragment_to_logFragment"
+            app:destination="@+id/logFragment" />
+        <action
+            android:id="@+id/action_logsFragment_to_addLogFragment"
+            app:destination="@+id/addLogFragment" />
+    </fragment>
+
+    <!-- Settings -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.anna.chroniclog.ui.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <!-- Sub Screens -->
+    <!-- Add Symptom -->
+    <fragment
+        android:id="@+id/addSymptomFragment"
+        android:name="com.anna.chroniclog.ui.AddSymptomFragment"
+        android:label="Add Symptom"
+        tools:layout="@layout/fragment_add_symptom" />
+
+    <!-- Add Medication -->
+    <fragment
+        android:id="@+id/addMedicationFragment"
+        android:name="com.anna.chroniclog.ui.AddMedicationFragment"
+        android:label="Add Medication"
+        tools:layout="@layout/fragment_add_medication" />
+
+    <!-- Add Remediation -->
+    <fragment
+        android:id="@+id/addRemediationFragment"
+        android:name="com.anna.chroniclog.ui.AddRemediationFragment"
+        android:label="Add Remediation"
+        tools:layout="@layout/fragment_add_remediation" />
+
+    <!-- Log -->
+    <fragment
+        android:id="@+id/logFragment"
+        android:name="com.anna.chroniclog.ui.LogFragment"
+        tools:layout="@layout/fragment_log">
+        <argument
+            android:name="logId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_logFragment_to_EditLogFragment"
+            app:destination="@+id/editLogFragment" />
+    </fragment>
+
     <!-- Add Log -->
     <fragment
         android:id="@+id/addLogFragment"
@@ -40,71 +111,8 @@
             android:id="@+id/action_addLogFragment_to_logsFragment"
             app:destination="@+id/logsFragment" />
     </fragment>
-    <!-- Medications -->
-    <fragment
-        android:id="@+id/medicationsFragment"
-        android:name="com.anna.chroniclog.ui.MedicationsFragment"
-        android:label="Medications" >
-        <action
-            android:id="@+id/action_medicationsFragment_to_addMedicationFragment"
-            app:destination="@+id/addMedicationFragment" />
-    </fragment>
-    <!-- Logs -->
-    <fragment
-        android:id="@+id/logsFragment"
-        android:name="com.anna.chroniclog.ui.LogsFragment"
-        android:label="Logs" >
-        <action
-            android:id="@+id/action_logsFragment_to_logFragment"
-            app:destination="@+id/logFragment" />
-        <action
-            android:id="@+id/action_logsFragment_to_addLogFragment"
-            app:destination="@+id/addLogFragment" />
-    </fragment>
 
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.anna.chroniclog.ui.SettingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
-
-    <!-- Sub Screens -->
-    <fragment
-        android:id="@+id/addSymptomFragment"
-        android:name="com.anna.chroniclog.ui.AddSymptomFragment"
-        android:label="Add Symptom"
-        tools:layout="@layout/fragment_add_symptom" />
-
-    <fragment
-        android:id="@+id/addMedicationFragment"
-        android:name="com.anna.chroniclog.ui.AddMedicationFragment"
-        android:label="Add Medication"
-        tools:layout="@layout/fragment_add_medication" />
-
-    <fragment
-        android:id="@+id/addRemediationFragment"
-        android:name="com.anna.chroniclog.ui.AddRemediationFragment"
-        android:label="Add Remediation"
-        tools:layout="@layout/fragment_add_remediation" />
-
-    <fragment
-        android:id="@+id/providerShareFragment"
-        android:name="com.anna.chroniclog.ui.ProviderShareFragment"
-        android:label="Provider Share"
-        tools:layout="@layout/fragment_provider_share" />
-
-    <fragment
-        android:id="@+id/logFragment"
-        android:name="com.anna.chroniclog.ui.LogFragment"
-        tools:layout="@layout/fragment_log">
-        <argument
-            android:name="logId"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_logFragment_to_EditLogFragment"
-            app:destination="@+id/editLogFragment" />
-    </fragment>
-
+    <!-- Edit Log -->
     <fragment
         android:id="@+id/editLogFragment"
         android:name="com.anna.chroniclog.ui.EditLogFragment"
@@ -114,6 +122,7 @@
             app:argType="string" />
     </fragment>
 
+    <!-- Edit Health Info -->
     <fragment
         android:id="@+id/editHealthInformationFragment"
         android:name="com.anna.chroniclog.ui.EditHealthInformationFragment"

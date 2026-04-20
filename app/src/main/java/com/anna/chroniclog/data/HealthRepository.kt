@@ -1,6 +1,7 @@
 package com.anna.chroniclog.data
 
 import android.util.Log
+import com.anna.chroniclog.model.ChatMessage
 import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Remediation
@@ -8,6 +9,7 @@ import com.anna.chroniclog.model.Symptom
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
 
 // firestore data
@@ -293,5 +295,33 @@ class HealthRepository {
             .addOnSuccessListener { Log.d("Firestore", "Remediation deleted") }
             .addOnFailureListener { e -> Log.w("Firestore", "Error deleting Remediation", e) }
     }
+
+    // CHAT/MESSAGE
+    fun sendMessage(message: ChatMessage) {
+        db.collection("chat_general")
+            .add(message)
+            .addOnFailureListener { e -> Log.w("Firestore", "Error sending message", e) }
+    }
+
+    fun observeGeneralChat(onUpdate: (List<ChatMessage>) -> Unit) {
+        db.collection("chat_general")
+            .orderBy("timestamp")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) return@addSnapshotListener
+
+                val messages = snapshot?.toObjects(ChatMessage::class.java) ?: emptyList()
+                onUpdate(messages)
+            }
+    }
+    /*
+    fun observeChatByTopic(topicId: String, onUpdate: (List<ChatMessage>) -> Unit) {
+        db.collection("chats")
+            .whereEqualTo("topicId", topicId) // Only get messages for this specific topic
+            .orderBy("timestamp")
+            .addSnapshotListener { snapshot, _ ->
+                val messages = snapshot?.toObjects(ChatMessage::class.java) ?: emptyList()
+                onUpdate(messages)
+            }
+    } */
 
 }

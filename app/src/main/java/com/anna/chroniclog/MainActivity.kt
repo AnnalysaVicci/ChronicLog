@@ -39,8 +39,10 @@ class MainActivity : AppCompatActivity() {
         val appBarConfig = AppBarConfiguration(
             setOf(
                 R.id.homeFragment,
-                R.id.healthInformationFragment,
-                R.id.addLogFragment,
+                //R.id.healthInformationFragment,
+                R.id.trendsFragment,
+                //R.id.addLogFragment,
+                R.id.chatFragment,
                 R.id.medicationsFragment,
                 R.id.logsFragment
             ),
@@ -57,14 +59,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-    /*
-    fun logout() {
-        FirebaseAuth.getInstance().signOut()
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
-    } */
-
     private fun initMenu() {
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

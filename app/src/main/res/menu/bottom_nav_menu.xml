@@ -3,23 +3,23 @@
         android:id="@+id/homeFragment"
         android:icon="@drawable/outline_home_24"
         android:title="Home" />
-    <!-- now on Home screen
-    <item
-        android:id="@+id/healthInformationFragment"
-        android:icon="@drawable/ic_chart_24"
-        android:title="Health Info" />
-        -->
     <item
         android:id="@+id/trendsFragment"
         android:icon="@drawable/baseline_insert_chart_outlined_24"
         android:title="Trends" />
+    <!-- relacing with chat
     <item
         android:id="@+id/addLogFragment"
         android:icon="@drawable/outline_add_24"
         android:title="Add Log" />
+        -->
+    <item
+        android:id="@+id/chatFragment"
+        android:icon="@drawable/outline_chat_24"
+        android:title="Chat" />
     <item
         android:id="@+id/medicationsFragment"
-        android:icon="@drawable/outline_diagnosis_24"
+        android:icon="@drawable/outline_medication_24"
         android:title="Medications" />
     <item
         android:id="@+id/logsFragment"

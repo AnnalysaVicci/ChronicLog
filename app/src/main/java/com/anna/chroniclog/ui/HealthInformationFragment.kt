@@ -39,9 +39,10 @@ class HealthInformationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // nav to edit health info frag
+        /*
         binding.btnEditHealthInfo.setOnClickListener {
             findNavController().navigate(HealthInformationFragmentDirections.actionHealthInformationFragmentToEditHealthInformationFragment())
-        }
+        } */
 
         // setup symptom RecyclerView
         symptomAdapter = SymptomAdapter(symptoms) { position ->

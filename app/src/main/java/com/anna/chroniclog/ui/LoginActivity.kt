@@ -20,10 +20,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
-        // force signout for testing, remove when done
-        //auth.signOut() // force logout every launch
 
-        // If user is already logged in, skip to MainActivity
+        // if user is already logged in, skip to MainActivity
         if (auth.currentUser != null) {
            goToMain()
         }
