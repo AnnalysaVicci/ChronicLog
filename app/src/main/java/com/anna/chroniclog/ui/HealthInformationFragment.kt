@@ -1,4 +1,4 @@
-// HealthInformationFragment
+// HealthInformationFragment - holds users health info, may include medical history in the future
 package com.anna.chroniclog.ui
 
 import android.os.Bundle

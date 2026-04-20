@@ -56,6 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!--
     <TextView
         android:id="@+id/tvDiagnoses"
         android:text="Diagnoses"
@@ -74,6 +75,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvDiagnoses"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+        -->
 
     <TextView
         android:id="@+id/tvCurrentMedications"
@@ -84,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvDiagnoses" />
+        app:layout_constraintTop_toBottomOf="@+id/rvSymptoms" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCurrentMedications"
         android:layout_width="match_parent"

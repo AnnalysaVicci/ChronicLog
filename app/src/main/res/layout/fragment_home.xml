@@ -45,6 +45,67 @@
             android:src="@android:drawable/ic_menu_share" />
     </LinearLayout>
 
+    <!-- Health Info -->
+    <TextView
+        android:id="@+id/tvHealthInfo"
+        android:text="Health Information"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llShare"/>
+    <ImageButton
+        android:id="@+id/btnEditHealthInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/outline_edit_24"
+        app:layout_constraintTop_toTopOf="@id/tvHealthInfo"
+        app:layout_constraintStart_toEndOf="@id/tvHealthInfo"/>
+
+    <TextView
+        android:id="@+id/tvAge"
+        android:text="Age: "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnEditHealthInfo"/>
+
+    <TextView
+        android:id="@+id/tvSex"
+        android:text="Sex: "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAge" />
+
+    <TextView
+        android:id="@+id/tvCurrentMedications"
+        android:text="Current Medications"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSex" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCurrentMedications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentMedications"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Health Trends -->
+    <!--
     <TextView
         android:id="@+id/tvHealthTrends"
         android:text="Health Trends"
@@ -67,4 +128,5 @@
             android:orientation="vertical">
         </LinearLayout>
     </ScrollView>
+    -->
 </androidx.constraintlayout.widget.ConstraintLayout>
