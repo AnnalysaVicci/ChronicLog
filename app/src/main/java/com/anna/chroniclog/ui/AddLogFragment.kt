@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
+import com.anna.chroniclog.R
 import com.anna.chroniclog.adapter.RemediationAdapter
 import com.anna.chroniclog.adapter.SymptomAdapter
 import com.anna.chroniclog.databinding.FragmentAddLogBinding
@@ -63,11 +64,8 @@ class AddLogFragment : Fragment() {
             findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddRemediationFragment())
         }
 
-        //binding.rgMood.setOnCheckedChangeListener { group, i ->
-            //val radioButton = binding.rgMood.findViewById<RadioButton>(i)
-        //}
         binding.rgMood.setOnCheckedChangeListener { group, checkedId ->
-            // Loop through all buttons to reset their alpha/transparency
+            // loop through all buttons to reset their alpha/transparency
             for (i in 0 until group.childCount) {
                 val rb = group.getChildAt(i) as RadioButton
                 rb.alpha = if (rb.id == checkedId) 1.0f else 0.5f
@@ -108,11 +106,11 @@ class AddLogFragment : Fragment() {
 
         val moodId = binding.rgMood.checkedRadioButtonId
         val mood = when (moodId) {
-            binding.mood1.id -> "Terrible"
-            binding.mood2.id -> "Bad"
-            binding.mood3.id -> "Meh"
-            binding.mood4.id -> "Good"
-            binding.mood5.id -> "Amazing"
+            binding.mood1.id -> "☹\uFE0F" //"Terrible"
+            binding.mood2.id -> "\uD83D\uDE41"  //"Bad"
+            binding.mood3.id -> "\uD83D\uDE10" //"Meh"
+            binding.mood4.id -> "\uD83D\uDE42" //""Good"
+            binding.mood5.id -> "\uD83D\uDE00" //""Amazing"
             else -> ""
         }
         val notes = binding.etEditNotes.text.toString().trim()
@@ -123,17 +121,35 @@ class AddLogFragment : Fragment() {
         }
 
         // save to fire store
-        val log = LogEntry(
+        val newLog = LogEntry(
             date = dateStr,
             symptoms = symptoms,
             remediations = remediations,
             sentiment = mood,
             notes = notes
         )
-        viewModel.addLog(log)
 
+        // map symptoms and remediations to include this specific log's ID
+        val finalSymptoms = symptoms.map { it.copy(logId = newLog.id) }
+        val finalRemediations = remediations.map { it.copy(logId = newLog.id) }
+
+        // create the complete log object
+        val completeLog = newLog.copy(
+            symptoms = finalSymptoms,
+            remediations = finalRemediations
+        )
+
+        // save to ViewModel/Firestore
+        finalSymptoms.forEach { symptom ->
+            viewModel.addSymptom(symptom)
+        }
+        finalRemediations.forEach { remediation ->
+            viewModel.addRemediation(remediation)
+        }
+
+        viewModel.addLog(completeLog)
         viewModel.clearTempData()
-        parentFragmentManager.popBackStack()
+        findNavController().popBackStack()
     }
 
     override fun onDestroyView() {

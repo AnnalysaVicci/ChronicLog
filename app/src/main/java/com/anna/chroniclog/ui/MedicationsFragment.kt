@@ -18,7 +18,6 @@ import kotlin.getValue
 class MedicationsFragment : Fragment() {
     private var _binding: FragmentMedicationsBinding? = null
     private val binding get() = _binding!!
-    //private lateinit var medicationsAdapter: MedicationsAdapter
     private lateinit var currentMedicationsAdapter: MedicationsAdapter
     private lateinit var allMedicationsAdapter: MedicationsAdapter
     private val viewModel: MainViewModel by activityViewModels()
@@ -36,10 +35,6 @@ class MedicationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // setup medications RecyclerView
-        //medicationsAdapter = MedicationsAdapter(emptyList()) { medication -> }
-        //binding.rvAllMedications.layoutManager = LinearLayoutManager(requireContext())
-        //binding.rvAllMedications.adapter = medicationsAdapter
-
         currentMedicationsAdapter = MedicationsAdapter(emptyList()) { medication -> }
         binding.rvCurrentMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
@@ -49,15 +44,9 @@ class MedicationsFragment : Fragment() {
         binding.rvAllMedications.adapter = allMedicationsAdapter
 
         viewModel.medications.observe(viewLifecycleOwner) { medications ->
-            //medicationsAdapter.updateMedications(medications)
             currentMedicationsAdapter.updateMedications(medications.filter { it.currentlyTaking })
             allMedicationsAdapter.updateMedications(medications.filter { !it.currentlyTaking })
         }
-
-        //medicationsAdapter.updateMedications(testMeds)
-        //currentMedicationsAdapter.updateMedications(testMeds.filter { it.currentlyTaking })
-        //allMedicationsAdapter.updateMedications(testMeds.filter { !it.currentlyTaking })
-
 
         // observe ViewModel
         viewModel.medications.observe(viewLifecycleOwner) { medications ->

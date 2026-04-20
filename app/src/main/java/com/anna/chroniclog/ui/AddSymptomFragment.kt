@@ -20,6 +20,7 @@ class AddSymptomFragment : Fragment() {
     private var _binding: FragmentAddSymptomBinding? = null
     private val binding get() = _binding!!
 
+    //private var photoUri: Uri? = null
     private var searchJob: kotlinx.coroutines.Job? = null
     private val viewModel: MainViewModel by activityViewModels()
 

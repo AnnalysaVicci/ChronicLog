@@ -57,7 +57,6 @@ class HealthInformationFragment : Fragment() {
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
 
         viewModel.medications.observe(viewLifecycleOwner) { updatedMeds ->
-            //currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking })
             currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking})
         }
 

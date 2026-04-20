@@ -58,6 +58,8 @@ class MainViewModel : ViewModel() {
         loadUserProfile()
         loadLogs()
         loadMedications()
+        loadSymptoms()
+        loadRemediations()
         //loadDefaultLogs()
         //loadDefaultMeds()
         //loadDefaultSymptoms()
@@ -99,7 +101,6 @@ class MainViewModel : ViewModel() {
             if (it.id == updatedLog.id) updatedLog else it
         }
     }
-    // FireStore data
     private fun loadLogs() {
         healthRepository.loadLogs { logs ->
             _logs.postValue(logs)
@@ -143,6 +144,11 @@ class MainViewModel : ViewModel() {
             if (it.id == updatedSymptom.id) updatedSymptom else it
         }
     }
+    private fun loadSymptoms() {
+        healthRepository.loadSymptoms { symptoms ->
+            _symptoms.postValue(symptoms)
+        }
+    }
 
     fun addRemediation(newRemediation: Remediation) {
         val currentList = _remediations.value ?: emptyList()
@@ -156,8 +162,13 @@ class MainViewModel : ViewModel() {
             if (it.id == updatedRemediation.id) updatedRemediation else it
         }
     }
+    private fun loadRemediations() {
+        healthRepository.loadRemediations { remediations ->
+            _remediations.postValue(remediations)
+        }
+    }
 
-    // handle symptom data
+    // handle temp symptom data
     fun addTempSymptom(symptom: Symptom) {
         val current = _tempSymptoms.value ?: emptyList()
         _tempSymptoms.value = current + symptom

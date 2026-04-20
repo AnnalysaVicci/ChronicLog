@@ -43,7 +43,6 @@ class LogFragment : Fragment() {
 
         val logId = args.logId
 
-
         // setup symptom RecyclerView
         symptomAdapter = SymptomAdapter(symptoms) { position ->
             symptoms.removeAt(position)
@@ -60,7 +59,28 @@ class LogFragment : Fragment() {
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter
 
+        // observe the logs from the ViewModel
+        viewModel.logs.observe(viewLifecycleOwner) { logList ->
+            // find the specific log that matches the ID passed in args
+            val currentLog = logList.find { it.id == logId }
 
+            currentLog?.let { log ->
+                binding.tvDate.text = log.date
+                binding.tvSentiment.text = log.sentiment
+                binding.tvNotes.text = log.notes
+            }
+        }
+
+        viewModel.symptoms.observe(viewLifecycleOwner) { allSymptoms ->
+            // filter all symptoms to find only those belonging to THIS log
+            val filteredSymptoms = allSymptoms.filter { it.logId == logId }
+            symptomAdapter.updateSymptoms(filteredSymptoms)
+        }
+
+        viewModel.remediations.observe(viewLifecycleOwner) { allRemediations ->
+            val filteredRemediations = allRemediations.filter { it.logId == logId }
+            remediationAdapter.updateRemediations(filteredRemediations)
+        }
 
         // navigate to EditLogFragment
         binding.btnEditLog.setOnClickListener {
@@ -69,6 +89,7 @@ class LogFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        // delete log
         binding.btnDeleteLog.setOnClickListener {
             viewModel.deleteLog(logId)
             findNavController().popBackStack()

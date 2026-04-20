@@ -118,7 +118,9 @@ class HealthRepository {
             "id" to log.id,
             "date" to log.date,
             "sentiment" to log.sentiment,
-            "notes" to log.notes
+            "notes" to log.notes,
+            "symptoms" to log.symptoms,
+            "remediations" to log.remediations
         )
         db.collection("users").document(uid)
             .collection("logs").document(log.id)
@@ -176,7 +178,8 @@ class HealthRepository {
             "id" to symptom.id,
             "name" to symptom.name,
             "severity" to symptom.severity,
-            "logId" to logId
+            "logId" to logId,
+            "userId" to uid
         )
         db.collection("users").document(uid)
             .collection("logs").document(logId)
@@ -184,25 +187,18 @@ class HealthRepository {
             .set(map)
     }
 
-    fun loadAllSymptoms(onResult: (List<Symptom>) -> Unit) {
+    fun loadSymptoms(onResult: (List<Symptom>) -> Unit) {
         val uid = userId ?: return
-        // collection group query
-        db.collection("users").document(uid).collection("logs").get()
-            .addOnSuccessListener { logsSnapshot ->
-                val allSymptoms = mutableListOf<Symptom>()
-                var tasksProcessed = 0
 
-                if (logsSnapshot.isEmpty) onResult(emptyList())
-
-                for (logDoc in logsSnapshot.documents) {
-                    logDoc.reference.collection("symptoms").get().addOnSuccessListener { symptomSnapshot ->
-                        allSymptoms.addAll(symptomSnapshot.toObjects(Symptom::class.java))
-                        tasksProcessed++
-                        if (tasksProcessed == logsSnapshot.size()) {
-                            onResult(allSymptoms)
-                        }
-                    }
-                }
+        db.collectionGroup("symptoms")
+            .whereEqualTo("userId", uid)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val symptoms = snapshot.toObjects(Symptom::class.java)
+                onResult(symptoms)
+            }
+            .addOnFailureListener {
+                onResult(emptyList())
             }
     }
     fun getSymptomSummary(onResult: (Map<String, Int>) -> Unit) {
@@ -252,32 +248,27 @@ class HealthRepository {
             "id" to remediation.id,
             "name" to remediation.name,
             "outcome" to remediation.outcome,
-            "logId" to logId
+            "logId" to logId,
+            "userId" to uid // ADD THIS FIELD
         )
         db.collection("users").document(uid)
             .collection("logs").document(logId)
             .collection("remediations").document(remediation.id)
             .set(map)
     }
-
-    /*
-    fun updateRemediationSummary(remediations: List<Remediation>) {
+    fun loadRemediations(onResult: (List<Remediation>) -> Unit) {
         val uid = userId ?: return
-        val statsRef = db.collection("users").document(uid)
-            .collection("aggregates").document("remediation_stats")
 
-        val updates = mutableMapOf<String, Any>()
-        remediation.forEach { remediation ->
-            // This increment happens directly on the server!
-            updates["frequencies.${remediation.name}"] = FieldValue.increment(1)
-        }
-
-        statsRef.update(updates).addOnFailureListener {
-            // If the document doesn't exist yet, use .set() instead
-            statsRef.set(updates)
-        }
-    } */
-
-
+        db.collectionGroup("remediations")
+            .whereEqualTo("userId", uid)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val remediations = snapshot.toObjects(Remediation::class.java)
+                onResult(remediations)
+            }
+            .addOnFailureListener {
+                onResult(emptyList())
+            }
+    }
 
 }
