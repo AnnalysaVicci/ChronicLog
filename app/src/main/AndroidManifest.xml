@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- For Photo Capabilities -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -30,9 +34,6 @@
             android:exported="false" />
 
         <!-- For Photo Capabilities -->
-        <uses-permission android:name="android.permission.CAMERA" />
-        <uses-feature android:name="android.hardware.camera" android:required="false" />
-
         <provider
             android:authorities="com.anna.chroniclog"
             android:name="androidx.core.content.FileProvider"
@@ -44,5 +45,4 @@
                 />
         </provider>
     </application>
-
 </manifest>

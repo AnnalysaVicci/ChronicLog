@@ -1,7 +1,6 @@
 // LogsFragment - screen where all daily logs are shown
 package com.anna.chroniclog.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.adapter.LogsAdapter
 import com.anna.chroniclog.databinding.FragmentLogsBinding
-import com.anna.chroniclog.model.LogEntry
 
 class LogsFragment : Fragment() {
-
     private var _binding: FragmentLogsBinding? = null
     private val binding get() = _binding!!
     private lateinit var logsAdapter: LogsAdapter

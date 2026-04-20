@@ -54,7 +54,7 @@ class MainViewModel : ViewModel() {
 
 
     init {
-        // load initial data immediately
+        // load initial data
         loadUserProfile()
         loadLogs()
         loadMedications()

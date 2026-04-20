@@ -171,7 +171,8 @@ class HealthRepository {
             }
     }
 
-    // Symptoms
+    // SYMPTOMS (save, load, update)
+    // need delete
     private fun saveSymptom(symptom: Symptom, logId: String) {
         val uid = userId ?: return
         val map = hashMapOf(
@@ -195,12 +196,24 @@ class HealthRepository {
             .get()
             .addOnSuccessListener { snapshot ->
                 val symptoms = snapshot.toObjects(Symptom::class.java)
+                Log.d("Firestore", "Loaded ${symptoms.size} symptoms")
                 onResult(symptoms)
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Failed to load symptoms: ${e.message}")
                 onResult(emptyList())
             }
     }
+    /*
+    fun deleteSymptom(symptomId: String) {
+        val uid = userId ?: return
+        db.collection("users").document(uid)
+            .collection("symptoms").document(symptomId)
+            .delete()
+            .addOnSuccessListener { Log.d("Firestore", "Symptom deleted") }
+            .addOnFailureListener { e -> Log.w("Firestore", "Error deleting Symptom", e) }
+    } */
+
     fun getSymptomSummary(onResult: (Map<String, Int>) -> Unit) {
         val uid = userId ?: return
         db.collection("users").document(uid)
@@ -241,7 +254,7 @@ class HealthRepository {
     }
 
 
-    // Remediations
+    // REMEDIATIONS (save, load, delete)
     private fun saveRemediation(remediation: Remediation, logId: String) {
         val uid = userId ?: return
         val map = hashMapOf(
@@ -264,11 +277,22 @@ class HealthRepository {
             .get()
             .addOnSuccessListener { snapshot ->
                 val remediations = snapshot.toObjects(Remediation::class.java)
+                Log.d("Firestore", "Loaded ${remediations.size} remediations")
                 onResult(remediations)
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Failed to load remediations: ${e.message}")
                 onResult(emptyList())
             }
     }
+    /*
+    fun deleteRemediation(remediationId: String) {
+        val uid = userId ?: return
+        db.collection("users").document(uid)
+            .collection("remediations").document(remediationId)
+            .delete()
+            .addOnSuccessListener { Log.d("Firestore", "Remediation deleted") }
+            .addOnFailureListener { e -> Log.w("Firestore", "Error deleting Remediation", e) }
+    } */
 
 }

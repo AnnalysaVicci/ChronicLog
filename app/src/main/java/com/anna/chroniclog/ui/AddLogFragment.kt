@@ -1,3 +1,4 @@
+// AddLogFragment - screen where user can add a log
 package com.anna.chroniclog.ui
 
 import android.os.Bundle
@@ -11,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
-import com.anna.chroniclog.R
 import com.anna.chroniclog.adapter.RemediationAdapter
 import com.anna.chroniclog.adapter.SymptomAdapter
 import com.anna.chroniclog.databinding.FragmentAddLogBinding
@@ -98,6 +98,7 @@ class AddLogFragment : Fragment() {
     }
 
     fun saveLog() {
+        // new log data
         val datePicker = binding.datePicker
         val year = datePicker.year
         val month = datePicker.month + 1
@@ -110,7 +111,7 @@ class AddLogFragment : Fragment() {
             binding.mood2.id -> "\uD83D\uDE41"  //"Bad"
             binding.mood3.id -> "\uD83D\uDE10" //"Meh"
             binding.mood4.id -> "\uD83D\uDE42" //""Good"
-            binding.mood5.id -> "\uD83D\uDE00" //""Amazing"
+            binding.mood5.id -> "\uD83D\uDE00" //"Amazing"
             else -> ""
         }
         val notes = binding.etEditNotes.text.toString().trim()
@@ -139,17 +140,20 @@ class AddLogFragment : Fragment() {
             remediations = finalRemediations
         )
 
-        // save to ViewModel/Firestore
+        // adds to _symptoms LiveData
         finalSymptoms.forEach { symptom ->
             viewModel.addSymptom(symptom)
         }
+        // adds to _symptoms LiveData
         finalRemediations.forEach { remediation ->
             viewModel.addRemediation(remediation)
         }
 
-        viewModel.addLog(completeLog)
+        viewModel.addLog(completeLog) // saves to firestore
         viewModel.clearTempData()
         findNavController().popBackStack()
+        // nav to logs
+        //findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToLogsFragment)
     }
 
     override fun onDestroyView() {

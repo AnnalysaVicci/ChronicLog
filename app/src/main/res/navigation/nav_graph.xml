@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_addLogFragment_to_addRemediationFragment"
             app:destination="@+id/addRemediationFragment" />
+        <action
+            android:id="@+id/action_addLogFragment_to_logsFragment"
+            app:destination="@+id/logsFragment" />
     </fragment>
     <!-- Medications -->
     <fragment
