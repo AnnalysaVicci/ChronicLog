@@ -65,7 +65,7 @@ class LogFragment : Fragment() {
             val currentLog = logList.find { it.id == logId }
 
             currentLog?.let { log ->
-                binding.tvDate.text = log.date
+                binding.tvDate.text = "Log from ${log.date}"
                 binding.tvSentiment.text = log.sentiment
                 binding.tvNotes.text = log.notes
             }

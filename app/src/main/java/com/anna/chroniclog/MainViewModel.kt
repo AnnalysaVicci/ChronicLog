@@ -85,8 +85,8 @@ class MainViewModel : ViewModel() {
         _logs.value = currentList + newLog
 
         // save symptoms from log to main symptoms list
-        val currentSymptoms = _symptoms.value ?: emptyList()
-        _symptoms.value = currentSymptoms + newLog.symptoms
+        //val currentSymptoms = _symptoms.value ?: emptyList()
+        //_symptoms.value = currentSymptoms + newLog.symptoms
 
         // firestore
         healthRepository.saveLog(newLog)

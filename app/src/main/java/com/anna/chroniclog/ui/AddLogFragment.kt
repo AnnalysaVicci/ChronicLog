@@ -151,9 +151,8 @@ class AddLogFragment : Fragment() {
 
         viewModel.addLog(completeLog) // saves to firestore
         viewModel.clearTempData()
-        findNavController().popBackStack()
         // nav to logs
-        //findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToLogsFragment)
+        findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToLogsFragment())
     }
 
     override fun onDestroyView() {

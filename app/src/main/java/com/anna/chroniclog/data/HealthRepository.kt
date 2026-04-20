@@ -47,7 +47,7 @@ class HealthRepository {
             }
     }
 
-    // Medications
+    // MEDICATIONS (save, load, delete)
     fun saveMedication(med: Medication) {
         val uid = userId ?: return
         val medMap = hashMapOf(
@@ -110,7 +110,7 @@ class HealthRepository {
             .addOnFailureListener { e -> Log.w("Firestore", "Error deleting medication", e) }
     }
 
-    // Logs
+    // LOGS (save, load, delete)
     fun saveLog(log: LogEntry) {
         val uid = userId ?: return
 
@@ -134,15 +134,6 @@ class HealthRepository {
 
         // save symptom to symptom_stats document in firestore
         updateSymptomSummary(log.symptoms)
-    }
-
-    fun deleteLog(logId: String) {
-        val uid = userId ?: return
-        db.collection("users").document(uid)
-            .collection("logs").document(logId)
-            .delete()
-            .addOnSuccessListener { Log.d("Firestore", "Log deleted") }
-            .addOnFailureListener { e -> Log.w("Firestore", "Error deleting log", e) }
     }
 
     fun loadLogs(onResult: (List<LogEntry>) -> Unit) {
@@ -171,8 +162,16 @@ class HealthRepository {
             }
     }
 
-    // SYMPTOMS (save, load, update)
-    // need delete
+    fun deleteLog(logId: String) {
+        val uid = userId ?: return
+        db.collection("users").document(uid)
+            .collection("logs").document(logId)
+            .delete()
+            .addOnSuccessListener { Log.d("Firestore", "Log deleted") }
+            .addOnFailureListener { e -> Log.w("Firestore", "Error deleting log", e) }
+    }
+
+    // SYMPTOMS (save, load, delete, update)
     private fun saveSymptom(symptom: Symptom, logId: String) {
         val uid = userId ?: return
         val map = hashMapOf(
@@ -204,7 +203,7 @@ class HealthRepository {
                 onResult(emptyList())
             }
     }
-    /*
+
     fun deleteSymptom(symptomId: String) {
         val uid = userId ?: return
         db.collection("users").document(uid)
@@ -212,7 +211,7 @@ class HealthRepository {
             .delete()
             .addOnSuccessListener { Log.d("Firestore", "Symptom deleted") }
             .addOnFailureListener { e -> Log.w("Firestore", "Error deleting Symptom", e) }
-    } */
+    }
 
     fun getSymptomSummary(onResult: (Map<String, Int>) -> Unit) {
         val uid = userId ?: return
@@ -262,7 +261,7 @@ class HealthRepository {
             "name" to remediation.name,
             "outcome" to remediation.outcome,
             "logId" to logId,
-            "userId" to uid // ADD THIS FIELD
+            "userId" to uid
         )
         db.collection("users").document(uid)
             .collection("logs").document(logId)
@@ -285,7 +284,7 @@ class HealthRepository {
                 onResult(emptyList())
             }
     }
-    /*
+
     fun deleteRemediation(remediationId: String) {
         val uid = userId ?: return
         db.collection("users").document(uid)
@@ -293,6 +292,6 @@ class HealthRepository {
             .delete()
             .addOnSuccessListener { Log.d("Firestore", "Remediation deleted") }
             .addOnFailureListener { e -> Log.w("Firestore", "Error deleting Remediation", e) }
-    } */
+    }
 
 }
