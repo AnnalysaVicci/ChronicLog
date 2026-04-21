@@ -27,6 +27,7 @@ class OnboardingDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         isCancelable = false // force them to fill it in
 
+        // setup sex options adapter
         val sexOptions = listOf("Female", "Male", "Non-binary", "Other")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -36,8 +37,8 @@ class OnboardingDialogFragment : DialogFragment() {
             val age = binding.etAge.text.toString()
             val sex = binding.spinnerSex.selectedItem.toString()
 
-            if (age.isEmpty() || age.toInt() < 13 || age.toInt()>120 ) {
-                binding.etAge.error = "Please enter a valid age"
+            if (age.isEmpty() || age.toInt() < 13 || age.toInt()>120) {
+                binding.etAge.error = "Please fill out all fields"
                 return@setOnClickListener
             }
 

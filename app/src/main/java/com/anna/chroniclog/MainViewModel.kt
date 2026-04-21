@@ -23,9 +23,13 @@ class MainViewModel : ViewModel() {
 
     private val _userAge = MutableLiveData<Int>()
     val userAge: LiveData<Int> get() = _userAge
-
     private val _userSex = MutableLiveData<String>()
     val userSex: LiveData<String> get() = _userSex
+    private val _userIssues = MutableLiveData<String>()
+    val userIssues: LiveData<String> get() = _userIssues
+
+    private val _chronicIllnesses = MutableLiveData<List<String>>(emptyList())
+    val chronicIllnesses: LiveData<List<String>> get() = _chronicIllnesses
 
     private val _logs = MutableLiveData<List<LogEntry>>()
     val logs: LiveData<List<LogEntry>> get() = _logs
@@ -65,6 +69,7 @@ class MainViewModel : ViewModel() {
         loadMedications()
         loadSymptoms()
         loadRemediations()
+        load
         // start chat
         //startChatService()
     }
@@ -80,6 +85,21 @@ class MainViewModel : ViewModel() {
             _userAge.postValue(age)
             _userSex.postValue(sex)
         }
+    }
+
+    fun addChronicIllness(illness: String) {
+        val current = _chronicIllnesses.value ?: emptyList()
+        if (!current.contains(illness)) {
+            val updated = current + illness
+            _chronicIllnesses.value = updated
+            healthRepository.saveChronicIllnesses(updated)
+        }
+    }
+    fun removeChronicIllness(illness: String) {
+        val current = _chronicIllnesses.value ?: emptyList()
+        val updated = current.filter { it != illness }
+        _chronicIllnesses.value = updated
+        healthRepository.saveChronicIllnesses(updated)
     }
 
     fun addLog(newLog: LogEntry) {

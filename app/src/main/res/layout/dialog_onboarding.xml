@@ -37,10 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"/>
 
-    <!-- Not Ready to Implement -->
-    <!-- Add Chronic Symptoms
+    <!-- Add Chronic Symptoms -->
+    <!--
     <TextView
-        android:text="What are your most chronic symptoms?"
+        android:text="What are your chronic issue?"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button

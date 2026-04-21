@@ -117,10 +117,6 @@ class AddSymptomFragment : Fragment() {
 
         val imageFile = File(imageDir, "temp_symptom.jpg")
 
-        //val imageFile = File(requireContext().filesDir, "captured_media/temp_symptom.jpg").apply {
-            //parentFile.mkdirs()
-        //}
-
         // get uri via FileProvider
         photoUri = FileProvider.getUriForFile(
             requireContext(),

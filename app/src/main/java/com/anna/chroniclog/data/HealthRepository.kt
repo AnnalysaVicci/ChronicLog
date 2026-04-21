@@ -51,6 +51,13 @@ class HealthRepository {
             }
     }
 
+    // CHRONIC ILLNESS/ISSUES
+    fun saveChronicIllnesses(illnesses: List<String>) {
+        val uid = userId ?: return
+        db.collection("users").document(uid)
+            .update("chronicIllnesses", illnesses)
+    }
+
     // MEDICATIONS (save, load, delete)
     fun saveMedication(med: Medication) {
         val uid = userId ?: return

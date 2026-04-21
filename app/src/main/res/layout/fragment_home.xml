@@ -65,6 +65,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tvHealthInfo"
         app:layout_constraintStart_toEndOf="@id/tvHealthInfo"/>
 
+    <!-- Age -->
     <TextView
         android:id="@+id/tvAge"
         android:text="Age: "
@@ -75,6 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHealthInfo"/>
 
+    <!-- Sex -->
     <TextView
         android:id="@+id/tvSex"
         android:text="Sex: "
@@ -85,6 +87,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAge" />
 
+    <!-- Chronic Issues -->
+    <TextView
+        android:id="@+id/tvIssues"
+        android:text="Chronic Issues: "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSex" />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgHomeIllnesses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:chipSpacingHorizontal="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvIssues"/>
+
+    <!-- Current Medications -->
     <TextView
         android:id="@+id/tvCurrentMedications"
         android:text="Current Medications"
@@ -94,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSex" />
+        app:layout_constraintTop_toBottomOf="@+id/cgHomeIllnesses" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCurrentMedications"
         android:layout_width="match_parent"
@@ -104,6 +128,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Chronic Symptoms -->
+    <!--
     <TextView
         android:id="@+id/tvChronicSymptoms"
         android:text="Chronic Symptoms"
@@ -122,6 +148,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvChronicSymptoms"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+        -->
 
     <!-- Health Trends -->
     <!--
