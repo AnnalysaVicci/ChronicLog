@@ -57,6 +57,8 @@ class HomeFragment : Fragment() {
         binding.rvCurrentMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
 
+        // want to make medication btnDeleteMed view.GONE
+
         // observe current medications
         viewModel.medications.observe(viewLifecycleOwner) { updatedMeds ->
             currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking})

@@ -37,6 +37,18 @@ class AddMedicationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // setup Dosage units
+        val units = listOf("mg", "g", "mL", "ml")
+        val unitAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, units)
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerDosageUnit.adapter = unitAdapter
+
+        // setup Frequency options
+        val frequencies = listOf("/day", "/hour", "/week", "/month", "as needed")
+        val freqAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, frequencies)
+        freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerFreq.adapter = freqAdapter
+
         // handle openfda med auto complete
         val drugAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
         binding.medNameInput.setAdapter(drugAdapter)
@@ -83,8 +95,14 @@ class AddMedicationFragment : Fragment() {
 
     fun saveMedication() {
         val medname = binding.medNameInput.text.toString().trim()
-        val dosage = binding.etDosage.text.toString().trim()
-        val frequency = binding.etFreq.text.toString().trim()
+
+        val doseAmount = binding.etDosageNum.text.toString()
+        val doseUnit = binding.spinnerDosageUnit.selectedItem.toString()
+        val dosage = "$doseAmount$doseUnit"
+
+        val freqAmount = binding.etFreqNum.text.toString()
+        val freqUnit = binding.spinnerFreq.selectedItem.toString()
+        val frequency = " $freqAmount$freqUnit"
 
         val adherenceId = binding.rgAdherence.checkedRadioButtonId
         val adherence = when (adherenceId) {

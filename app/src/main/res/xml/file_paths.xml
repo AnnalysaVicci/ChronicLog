@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-path name="my_images" path="/" />
+    <!-- <external-path name="images" path="/" /> -->
+    <!-- <cache-path name="symptom_images" path="images/" /> -->
+    <files-path name="symptom_images" path="captured_media/" />
 </paths>

@@ -57,7 +57,7 @@
         <!-- Symptom Recycler View-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSymptoms"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@+id/btnAddSymptom"
@@ -86,7 +86,7 @@
         <!-- Remediation Recycler View-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRemediations"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@+id/btnAddRemediation"

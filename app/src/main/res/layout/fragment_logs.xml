@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="Add Log Button"
         android:src="@drawable/outline_add_24"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

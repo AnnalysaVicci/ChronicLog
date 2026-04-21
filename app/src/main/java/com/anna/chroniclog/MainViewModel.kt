@@ -1,5 +1,6 @@
 package com.anna.chroniclog
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -65,7 +66,7 @@ class MainViewModel : ViewModel() {
         loadSymptoms()
         loadRemediations()
         // start chat
-        startChatService()
+        //startChatService()
     }
 
     fun saveUserProfile(age: Int, sex: String) {
@@ -109,7 +110,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    // handle medication data
+    // MEDICATION (add, delete, update, load)
     fun addMedication(newMed: Medication) {
         val currentList = _medications.value ?: emptyList()
         _medications.value = currentList + newMed
@@ -118,22 +119,20 @@ class MainViewModel : ViewModel() {
     }
     fun deleteMedication(medId: String) {
         _medications.value = _medications.value?.filter { it.id != medId}
-        // firestore
-        //healthRepository.deleteMedication(medId)
+        healthRepository.deleteMedication(medId)
     }
     fun updateMedication(updatedMed: Medication) {
         _medications.value = _medications.value?.map {
             if (it.id == updatedMed.id) updatedMed else it
         }
     }
-    // FireStore data
     private fun loadMedications() {
         healthRepository.loadMedications { meds ->
             _medications.postValue(meds)
         }
     }
 
-    // SYMPTOMS
+    // SYMPTOMS (add, delete, update, load, uploadSymptomImage)
     fun addSymptom(newSymptom: Symptom) {
         val currentList = _symptoms.value ?: emptyList()
         _symptoms.value = currentList + newSymptom
@@ -151,7 +150,16 @@ class MainViewModel : ViewModel() {
             _symptoms.postValue(symptoms)
         }
     }
+    fun uploadSymptomImage(
+        symptomId: String,
+        localUri: Uri,
+        onSuccess: (String) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        healthRepository.uploadSymptomImage(symptomId, localUri, onSuccess, onFailure)
+    }
 
+    // REMEDIATION (add, delete, update, load)
     fun addRemediation(newRemediation: Remediation) {
         val currentList = _remediations.value ?: emptyList()
         _remediations.value = currentList + newRemediation
@@ -170,7 +178,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    // handle temp symptom data
+    // handle temp symptom and remediaiton data
     fun addTempSymptom(symptom: Symptom) {
         val current = _tempSymptoms.value ?: emptyList()
         _tempSymptoms.value = current + symptom
@@ -206,6 +214,7 @@ class MainViewModel : ViewModel() {
     }
 
     // CHAT
+    /*
     fun startChatService() {
         healthRepository.observeGeneralChat { messages ->
             _chatMessages.postValue(messages)
@@ -213,5 +222,5 @@ class MainViewModel : ViewModel() {
     }
     fun sendChatMessage(message: ChatMessage) {
         healthRepository.sendMessage(message)
-    }
+    } */
 }

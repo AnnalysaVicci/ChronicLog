@@ -35,6 +35,7 @@ class MedicationsAdapter(
             tvMedFreq.text = medication.frequency
 
             // expandable details data
+            tvMedFreq.text = "Frequency: ${medication.frequency}"
             tvStartDate.text = "Started: ${medication.startDate}"
             tvAdherence.text = "Adherance: ${medication.adherence}"
             checkboxCurrentlyTaking.isChecked = medication.currentlyTaking

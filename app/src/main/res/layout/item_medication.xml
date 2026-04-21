@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- Always visible row: name + dosage/freq -->
+        <!-- Always visible row: name + dosage -->
         <LinearLayout
             android:id="@+id/llMedItem"
             android:layout_width="match_parent"
@@ -37,15 +37,17 @@
                 android:text="20mg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tvMedFreq"
-                android:text="/day"
+            <!-- Delete Button -->
+            <ImageButton
+                android:id="@+id/btnDeleteMed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginEnd="8dp" />
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/outline_delete_24"
+                android:contentDescription="Delete Medication" />
 
             <!-- Expand/collapse arrow -->
             <ImageView
@@ -73,6 +75,14 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
+                android:id="@+id/tvMedFreq"
+                android:text="/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
                 android:id="@+id/tvAdherence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,41 +103,14 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="4dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <CheckBox
+                android:id="@+id/checkboxCurrentlyTaking"
+                android:text="Currently Taking"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <CheckBox
-                    android:id="@+id/checkboxCurrentlyTaking"
-                    android:text="Currently Taking"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <ImageButton
-                    android:id="@+id/btnDeleteMed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/outline_delete_24"/>
-
-            </LinearLayout>
-
-            <!-- Edit button -->
-            <!--
-            <Button
-                android:id="@+id/btnEditMedication"
-                android:text="Edit"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-                -->
+                android:layout_marginBottom="8dp" />
 
         </LinearLayout>
 

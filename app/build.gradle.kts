@@ -6,16 +6,13 @@ plugins {
     id("com.google.gms.google-services")
     // safe args plugin
     id("androidx.navigation.safeargs.kotlin")
+    id ("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.anna.chroniclog"
-    //compileSdk {
-        //version = release(36) {
-            //minorApiLevel = 1
-        //}
-    //}
     compileSdk = 36
+
     // add for view binding
     buildFeatures {
         viewBinding = true
@@ -53,6 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.camera.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,6 +59,7 @@ dependencies {
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.4.0")
+
     // Fragment
     implementation("androidx.fragment:fragment-ktx:1.8.9")
 
@@ -79,7 +78,9 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
 
     // Glide (from FC8, for photos, need to add glide folder)
-    //implementation("com.github.bumptech.glide:glide:5.0.5")
+    implementation("com.github.bumptech.glide:glide:5.0.5")
+    ksp("com.github.bumptech.glide:ksp:5.0.5")
+    //annotationProcessor 'com.github.bumptech.glide:compiler:5.0.5'
 
     // Retrofit and OkHttp for API calls
     implementation("com.squareup.retrofit2:retrofit:3.0.0")

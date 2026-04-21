@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anna.chroniclog.MainViewModel
 import com.anna.chroniclog.adapter.RemediationAdapter
 import com.anna.chroniclog.adapter.SymptomAdapter
+import com.anna.chroniclog.adapter.SymptomImageAdapter
 import com.anna.chroniclog.databinding.FragmentLogBinding
 import com.anna.chroniclog.model.Remediation
 import com.anna.chroniclog.model.Symptom
@@ -25,6 +26,7 @@ class LogFragment : Fragment() {
     private val remediations = mutableListOf<Remediation>()
     private lateinit var symptomAdapter: SymptomAdapter
     private lateinit var remediationAdapter: RemediationAdapter
+    private lateinit var imageAdapter: SymptomImageAdapter
     private val args: LogFragmentArgs by navArgs()
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -48,6 +50,12 @@ class LogFragment : Fragment() {
         }
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSymptoms.adapter = symptomAdapter
+
+        // setup symptom image adapter
+        imageAdapter = SymptomImageAdapter(emptyList())
+        binding.rvSymptomPictures.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSymptomPictures.adapter = imageAdapter
 
         // setup remediation RecyclerView
         /*
@@ -77,6 +85,21 @@ class LogFragment : Fragment() {
             // filter all symptoms to find only those belonging to THIS log
             val filteredSymptoms = allSymptoms.filter { it.logId == logId }
             symptomAdapter.updateSymptoms(filteredSymptoms)
+
+            // filter for symptoms with pictures
+            val imageUrls = filteredSymptoms
+                .map { it.imageUri }
+                .filter { it.isNotEmpty() }
+                .reversed()
+
+            if (imageUrls.isNotEmpty()) {
+                binding.tvSymptomPictures.visibility = View.VISIBLE
+                binding.cvSymptomPictures.visibility = View.VISIBLE
+                imageAdapter.updateImages(imageUrls)
+            } else {
+                binding.tvSymptomPictures.visibility = View.GONE
+                binding.cvSymptomPictures.visibility = View.GONE
+            }
         }
 
         viewModel.remediations.observe(viewLifecycleOwner) { allRemediations ->

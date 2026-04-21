@@ -1,15 +1,16 @@
 package com.anna.chroniclog.data
 
+import android.net.Uri
 import android.util.Log
 import com.anna.chroniclog.model.ChatMessage
 import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Remediation
 import com.anna.chroniclog.model.Symptom
+import com.anna.chroniclog.util.Storage
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
 
 // firestore data
@@ -18,6 +19,7 @@ class HealthRepository {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
     private val userId get() = auth.currentUser?.uid
+    private val storage = Storage()
 
     // User Profile
     fun saveUserData(age: Int, sex: String) {
@@ -181,6 +183,7 @@ class HealthRepository {
             "name" to symptom.name,
             "severity" to symptom.severity,
             "logId" to logId,
+            "imageUri" to symptom.imageUri,
             "userId" to uid
         )
         db.collection("users").document(uid)
@@ -252,6 +255,16 @@ class HealthRepository {
             // If the document doesn't exist yet, use .set() instead
             statsRef.set(updates)
         }
+    }
+
+    fun uploadSymptomImage(
+        symptomId: String,
+        localUri: Uri,
+        onSuccess: (String) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val uid = userId ?: return
+        storage.uploadSymptomImage(uid, symptomId, localUri, onSuccess, onFailure)
     }
 
 

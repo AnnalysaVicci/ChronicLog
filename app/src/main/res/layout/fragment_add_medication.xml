@@ -27,41 +27,64 @@
             app:layout_constraintStart_toEndOf="@id/tvMedicationName"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/tvDosage"
-            android:text="Dosage: "
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llDosage"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/medNameInput" />
-        <EditText
-            android:id="@+id/etDosage"
-            android:hint="e.g. 20mg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBaseline_toBaselineOf="@id/tvDosage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvDosage" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/medNameInput"
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/tvDosage"
+                android:text="Dosage: "
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/etDosageNum"
+                android:hint="20"
+                android:inputType="numberDecimal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <Spinner
+                android:id="@+id/spinnerDosageUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvFreq"
-            android:text="Frequency: "
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llFreq"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etDosage" />
-        <EditText
-            android:id="@+id/etFreq"
-            android:hint="e.g. 2/week"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBaseline_toBaselineOf="@id/tvFreq"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvFreq" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/llDosage"
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/tvFreq"
+                android:text="Frequency: "
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/etFreqNum"
+                android:hint="1x"
+                android:inputType="numberDecimal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <Spinner
+                android:id="@+id/spinnerFreq"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvAdherence"
@@ -70,7 +93,8 @@
             android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/etFreq"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/llFreq"
             app:layout_constraintStart_toStartOf="parent"/>
         <RadioGroup
             android:id="@+id/rgAdherence"

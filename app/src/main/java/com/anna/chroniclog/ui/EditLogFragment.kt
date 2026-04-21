@@ -43,18 +43,6 @@ class EditLogFragment : Fragment() {
 
         val logId = args.logId
 
-        // observe the logs from the ViewModel
-        viewModel.logs.observe(viewLifecycleOwner) { logList ->
-            // find the specific log that matches the ID passed in args
-            val currentLog = logList.find { it.id == logId }
-
-            currentLog?.let { log ->
-                binding.tvDate.text = "Edit Log from ${log.date}"
-                binding.tvNotes.text = log.notes
-                // load sentiment
-            }
-        }
-
         // setup symptom RecyclerView
         symptomAdapter = SymptomAdapter(symptoms) { position ->
             symptoms.removeAt(position)
@@ -62,17 +50,6 @@ class EditLogFragment : Fragment() {
         }
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSymptoms.adapter = symptomAdapter
-
-        viewModel.symptoms.observe(viewLifecycleOwner) { allSymptoms ->
-            // filter all symptoms to find only those belonging to THIS log
-            val filteredSymptoms = allSymptoms.filter { it.logId == logId }
-            symptomAdapter.updateSymptoms(filteredSymptoms)
-        }
-
-        // Add Symptom Button
-        binding.btnAddSymptom.setOnClickListener {
-            findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddSymptomFragment())
-        }
 
         // setup remediation RecyclerView
         /*
@@ -85,6 +62,30 @@ class EditLogFragment : Fragment() {
         }
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter
+
+
+        // observe the logs from the ViewModel
+        viewModel.logs.observe(viewLifecycleOwner) { logList ->
+            // find the specific log that matches the ID passed in args
+            val currentLog = logList.find { it.id == logId }
+
+            currentLog?.let { log ->
+                binding.tvDate.text = "Edit Log from ${log.date}"
+                // load sentiment
+            }
+        }
+
+
+        viewModel.symptoms.observe(viewLifecycleOwner) { allSymptoms ->
+            // filter all symptoms to find only those belonging to THIS log
+            val filteredSymptoms = allSymptoms.filter { it.logId == logId }
+            symptomAdapter.updateSymptoms(filteredSymptoms)
+        }
+
+        // Add Symptom Button
+        binding.btnAddSymptom.setOnClickListener {
+            findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddSymptomFragment())
+        }
 
         viewModel.remediations.observe(viewLifecycleOwner) { allRemediations ->
             val filteredRemediations = allRemediations.filter { it.logId == logId }
@@ -113,20 +114,6 @@ class EditLogFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             updateLog()
-        }
-
-        // observe symptoms from ViewModel
-        viewModel.tempSymptoms.observe(viewLifecycleOwner) { updatedList ->
-            symptoms.clear()
-            symptoms.addAll(updatedList)
-            symptomAdapter.updateSymptoms(updatedList)
-        }
-
-        // observe remediations from ViewModel
-        viewModel.tempRemediations.observe(viewLifecycleOwner) { updatedList ->
-            remediations.clear()
-            remediations.addAll(updatedList)
-            remediationAdapter.updateRemediations(updatedList)
         }
     }
 
