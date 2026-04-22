@@ -95,7 +95,7 @@ class HomeFragment : Fragment() {
         val sex = viewModel.userSex.value ?: "Not Specified"
         val illnesses = viewModel.chronicIllnesses.value ?: emptyList()
         val meds = viewModel.medications.value ?: emptyList()
-        val symptoms = trendsViewModel.symptomFrequency.value
+        val symptoms = trendsViewModel.symptomFrequency.value ?: emptyMap()
         val remedies = viewModel.remediations.value ?: emptyList()
 
         // generate file

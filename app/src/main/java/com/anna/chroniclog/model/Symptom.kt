@@ -8,5 +8,6 @@ data class Symptom(
     val name: String = "",
     val severity: Int = 0,
     val imageUri: String = "",
-    val logId: String = ""
+    val logId: String = "",
+    val timestamp: Long = 0L // matches the log it belongs to
 )

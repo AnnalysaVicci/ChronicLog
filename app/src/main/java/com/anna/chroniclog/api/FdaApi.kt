@@ -24,7 +24,7 @@ interface FdaApi {
         @Query("limit") limit: Int = 50
     ): FdaReactionResponse
 
-    // Wrapper classes to match OpenFDA's JSON structure
+    // wrapper classes to match OpenFDA's JSON structure
     class FdaResponse(val results: List<FdaResult>)
     class FdaResult(val openfda: FdaDrug?)
 

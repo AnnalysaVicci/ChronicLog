@@ -15,6 +15,7 @@ import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Medication
 import com.anna.chroniclog.model.Symptom
 import com.anna.chroniclog.model.Remediation
+import com.google.android.play.integrity.internal.u
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.launch
 
@@ -73,16 +74,20 @@ class MainViewModel : ViewModel() {
         startChatService()
     }
 
-    fun saveUserProfile(age: Int, sex: String) {
+    fun saveUserProfile(age: Int, sex: String, illnesses: List<String>) {
         _userAge.value = age
         _userSex.value = sex
+        _chronicIllnesses.value = illnesses
+
         healthRepository.saveUserData(age, sex)
+        healthRepository.saveChronicIllnesses(illnesses)
     }
 
     fun loadUserProfile() {
-        healthRepository.loadUserData { age, sex ->
+        healthRepository.loadUserData { age, sex, illnesses ->
             _userAge.postValue(age)
             _userSex.postValue(sex)
+            _chronicIllnesses.postValue(illnesses ?: emptyList())
         }
     }
 
@@ -101,32 +106,49 @@ class MainViewModel : ViewModel() {
         healthRepository.saveChronicIllnesses(updated)
     }
 
+
+    // LOGS
     fun addLog(newLog: LogEntry) {
-        // save log
         val currentList = _logs.value ?: emptyList()
-        _logs.value = currentList + newLog
+        // _logs.value = currentList + newLog
+        val updatedList = currentList + newLog
+        _logs.value = updatedList.sortedByDescending { it.timestamp }
 
-        // save symptoms from log to main symptoms list
-        //val currentSymptoms = _symptoms.value ?: emptyList()
-        //_symptoms.value = currentSymptoms + newLog.symptoms
-
-        // firestore
         healthRepository.saveLog(newLog)
+    }
+    private fun loadLogs() {
+        healthRepository.loadLogs { logs ->
+            //_logs.postValue(logs)
+            _logs.postValue(logs.sortedByDescending { it.timestamp }) // sorts by date for UI
+        }
     }
     fun deleteLog(logId: String) {
         _logs.value = _logs.value?.filter { it.id != logId}
         // firestore
         healthRepository.deleteLog(logId)
     }
-    fun updateLog(updatedLog: LogEntry) {
+    fun updateLog(updatedLog: LogEntry, removedSymptomIds: List<String>, removedRemediationIds: List<String>) {
+        // update _logs LiveData
         _logs.value = _logs.value?.map {
             if (it.id == updatedLog.id) updatedLog else it
         }
-    }
-    private fun loadLogs() {
-        healthRepository.loadLogs { logs ->
-            _logs.postValue(logs)
+
+        // persist log changes
+        healthRepository.saveLog(updatedLog)
+
+        // remove symptom from log in Firestore
+        removedSymptomIds.forEach { id ->
+            healthRepository.deleteSymptomFromLog(updatedLog.id, id)
         }
+
+        // remove remediation from log in Firestore
+        removedRemediationIds.forEach { id ->
+            healthRepository.deleteRemediationFromLog(updatedLog.id, id)
+        }
+
+        // update _symptoms and _remediations LiveData so UI is updated
+        _symptoms.value = _symptoms.value?.filterNot { it.id in removedSymptomIds}
+        _remediations.value = _remediations.value?.filterNot { it.id in removedRemediationIds }
     }
 
     // MEDICATION (add, delete, update, load)
@@ -218,7 +240,8 @@ class MainViewModel : ViewModel() {
         _tempRemediations.value = emptyList()
     }
 
-    // drug autosuggestion
+    // AUTOCOMPLETE SEARCH RESULTS
+    // gets result of drug/reaction search and posts to LiveData to be observed
     fun searchDrugs(name: String) {
         viewModelScope.launch {
             val results = fdaRepository.searchDrugs(name)
@@ -233,6 +256,7 @@ class MainViewModel : ViewModel() {
     }
 
     // CHAT
+    // gets chat data and posts to LiveData to be observed
     fun startChatService() {
         healthRepository.observeGeneralChat { messages ->
             _chatMessages.postValue(messages)

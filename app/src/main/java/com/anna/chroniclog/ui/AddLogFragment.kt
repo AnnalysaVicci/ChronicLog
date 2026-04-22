@@ -18,6 +18,7 @@ import com.anna.chroniclog.databinding.FragmentAddLogBinding
 import com.anna.chroniclog.model.LogEntry
 import com.anna.chroniclog.model.Symptom
 import com.anna.chroniclog.model.Remediation
+import kotlin.math.log
 
 class AddLogFragment : Fragment() {
     private var _binding: FragmentAddLogBinding? = null
@@ -39,6 +40,9 @@ class AddLogFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // user cannot pick future date
+        binding.datePicker.maxDate = System.currentTimeMillis()
 
         // setup symptom RecyclerView
         /*symptomAdapter = SymptomAdapter(symptoms) { position ->
@@ -107,10 +111,23 @@ class AddLogFragment : Fragment() {
     fun saveLog() {
         // new log data
         val datePicker = binding.datePicker
+
+        val calendar = java.util.Calendar.getInstance()
+        calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth, 0, 0, 0)
+        val logTimestamp = calendar.timeInMillis
+
         val year = datePicker.year
         val month = datePicker.month + 1
         val day = datePicker.dayOfMonth
         val dateStr = "$month/$day/$year"
+
+        // check if log already exists for this day
+        val existingLogs = viewModel.logs.value ?: emptyList()
+        val isDuplicate = existingLogs.any { it.date == dateStr }
+
+        if (isDuplicate) {
+            Toast.makeText(requireContext(), "A log already exists for $dateStr", Toast.LENGTH_SHORT).show()
+        }
 
         val moodId = binding.rgMood.checkedRadioButtonId
         val mood = when (moodId) {
@@ -131,6 +148,7 @@ class AddLogFragment : Fragment() {
         // save to fire store
         val newLog = LogEntry(
             date = dateStr,
+            timestamp = logTimestamp,
             symptoms = symptoms,
             remediations = remediations,
             sentiment = mood,
@@ -138,8 +156,19 @@ class AddLogFragment : Fragment() {
         )
 
         // map symptoms and remediations to include this specific log's ID
-        val finalSymptoms = symptoms.map { it.copy(logId = newLog.id) }
-        val finalRemediations = remediations.map { it.copy(logId = newLog.id) }
+        val finalSymptoms = symptoms.map {
+            it.copy(
+                name = it.name.trim().uppercase(), // for standardization
+                logId = newLog.id,
+                timestamp = logTimestamp
+            )
+        }
+        val finalRemediations = remediations.map {
+            it.copy(
+                logId = newLog.id,
+                timestamp = logTimestamp
+            )
+        }
 
         // create the complete log object
         val completeLog = newLog.copy(
@@ -156,9 +185,12 @@ class AddLogFragment : Fragment() {
             viewModel.addRemediation(remediation)
         }
 
+        // adds to _log LiveData
         viewModel.addLog(completeLog) // saves to firestore
         viewModel.clearTempData()
+
         // nav to logs
+        // I think I can just do popbackstack() now
         findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToLogsFragment())
     }
 

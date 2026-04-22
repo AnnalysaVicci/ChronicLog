@@ -69,15 +69,16 @@ class AddRemediationFragment : Fragment() {
 
         val remediation = Remediation(
             name = category,
+            description = description,
             outcome = outcome
         )
 
-        if (category.isNotEmpty()) {
+        if (category.isNotEmpty() and outcome.isNotEmpty() and description.isNotEmpty()) {
             // save to ViewModel
             viewModel.addTempRemediation(remediation)
             findNavController().popBackStack()
         } else {
-            Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -38,17 +38,6 @@ class HealthInformationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // nav to edit health info frag
-        /*
-        binding.btnEditHealthInfo.setOnClickListener {
-            findNavController().navigate(HealthInformationFragmentDirections.actionHealthInformationFragmentToEditHealthInformationFragment())
-        } */
-
-        // setup symptom RecyclerView
-        /* symptomAdapter = SymptomAdapter(symptoms) { position ->
-            symptoms.removeAt(position)
-            symptomAdapter.notifyItemRemoved(position)
-        } */
         symptomAdapter = SymptomAdapter(symptoms) { symptom ->
             viewModel.removeTempSymptom(symptom.id)
         }

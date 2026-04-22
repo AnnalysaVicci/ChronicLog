@@ -28,6 +28,9 @@ class EditLogFragment : Fragment() {
     private lateinit var symptomAdapter: SymptomAdapter
     private lateinit var remediationAdapter: RemediationAdapter
 
+    private val removedSymptomIds = mutableListOf<String>()
+    private val removedRemediationIds = mutableListOf<String>()
+
     private val args: LogFragmentArgs by navArgs()
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -49,6 +52,7 @@ class EditLogFragment : Fragment() {
             symptomAdapter.notifyItemRemoved(position)
         } */
         symptomAdapter = SymptomAdapter(symptoms) { symptom ->
+            removedSymptomIds.add(symptom.id)
             viewModel.removeTempSymptom(symptom.id)
         }
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
@@ -61,6 +65,7 @@ class EditLogFragment : Fragment() {
             remediationAdapter.notifyItemRemoved(position)
         } */
         remediationAdapter = RemediationAdapter(remediations) { remediation ->
+            removedRemediationIds.add(remediation.id)
             viewModel.removeTempRemediation(remediation.id)
         }
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
@@ -73,8 +78,23 @@ class EditLogFragment : Fragment() {
             val currentLog = logList.find { it.id == logId }
 
             currentLog?.let { log ->
+
+                // existing symptoms/remediations are added to temp symptoms/remediations
+                log.symptoms.forEach { viewModel.addTempSymptom(it) }
+                log.remediations.forEach { viewModel.addTempRemediation(it) }
+
                 binding.tvDate.text = "Edit Log from ${log.date}"
-                // load sentiment
+                binding.etEditNotes.setText(log.notes)
+
+                val rbId = when (log.sentiment) {
+                    "☹\uFE0F" -> binding.mood1.id
+                    "\uD83D\uDE41" -> binding.mood2.id
+                    "\uD83D\uDE10" -> binding.mood3.id
+                    "\uD83D\uDE42" -> binding.mood4.id
+                    "\uD83D\uDE00" -> binding.mood5.id
+                    else -> -1
+                }
+                if (rbId != -1) binding.rgMood.check(rbId)
             }
         }
 
@@ -87,7 +107,7 @@ class EditLogFragment : Fragment() {
 
         // Add Symptom Button
         binding.btnAddSymptom.setOnClickListener {
-            findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddSymptomFragment())
+            findNavController().navigate(EditLogFragmentDirections.actionEditLogFragmentToAddSymptomFragment())
         }
 
         viewModel.remediations.observe(viewLifecycleOwner) { allRemediations ->
@@ -97,7 +117,7 @@ class EditLogFragment : Fragment() {
 
         // Add Remediation Button
         binding.btnAddRemediation.setOnClickListener {
-            findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddRemediationFragment())
+            findNavController().navigate(EditLogFragmentDirections.actionEditLogFragmentToAddRemediationFragment())
         }
 
         // Rate Your Day Radio Group
@@ -121,7 +141,42 @@ class EditLogFragment : Fragment() {
     }
 
     fun updateLog() {
+        val logId = args.logId
+        val notes = binding.etEditNotes.text.toString().trim()
 
+        val moodId = binding.rgMood.checkedRadioButtonId
+        val mood = when (moodId) {
+            binding.mood1.id -> "☹\uFE0F" //"Terrible"
+            binding.mood2.id -> "\uD83D\uDE41"  //"Bad"
+            binding.mood3.id -> "\uD83D\uDE10" //"Meh"
+            binding.mood4.id -> "\uD83D\uDE42" //""Good"
+            binding.mood5.id -> "\uD83D\uDE00" //"Amazing"
+            else -> ""
+        }
+
+        if (mood.isEmpty()) {
+            Toast.makeText(requireContext(), "Please rate your day", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val updatedSymptoms = viewModel.tempSymptoms.value ?: emptyList()
+        val updatedRemediations = viewModel.tempRemediations.value ?: emptyList()
+
+        val originalLog = viewModel.logs.value?.find { it.id == logId }
+
+        val updatedLog = originalLog?.copy(
+            sentiment = mood,
+            notes = notes,
+            symptoms = updatedSymptoms,
+            remediations = updatedRemediations
+        )
+
+        if (updatedLog != null) {
+            viewModel.updateLog(updatedLog, removedSymptomIds, removedRemediationIds)
+
+            viewModel.clearTempData()
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {

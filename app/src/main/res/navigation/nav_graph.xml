@@ -120,6 +120,12 @@
         <argument
             android:name="logId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_editLogFragment_to_addSymptomFragment"
+            app:destination="@+id/addSymptomFragment" />
+        <action
+            android:id="@+id/action_editLogFragment_to_addRemediationFragment"
+            app:destination="@+id/addRemediationFragment" />
     </fragment>
 
     <!-- Edit Health Info -->

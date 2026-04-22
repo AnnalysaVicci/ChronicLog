@@ -37,49 +37,38 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"/>
 
-    <!-- Add Chronic Symptoms -->
-    <!--
+    <!-- Chronic Issues -->
     <TextView
-        android:text="What are your chronic issue?"
+        android:id="@+id/tvIssues"
+        android:text="What chronic issues do you experience?"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/btnAddSymptom"
-        android:text="+ Add Symptom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-        -->
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" />
+    <AutoCompleteTextView
+        android:id="@+id/atvIllness"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search common conditions..."
+        android:completionThreshold="1"/>
 
-    <!-- Symptom Recycler View
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvChronicSymptoms"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"/>
-        -->
-    <!-- Add Current Medications
-    <TextView
-        android:text="Are you taking any medications?"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
     <Button
-        android:id="@+id/btnAddMedication"
-        android:text="+ Add Medication"
+        android:id="@+id/btnAddIllness"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    -->
-    <!-- Medication Recycler View
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSymptoms"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"/>
-    -->
+        android:text="Add to Profile"
+        android:layout_gravity="center"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgIllnesses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
 
     <Button
         android:id="@+id/btnSubmit"
         android:text="Get Started"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>

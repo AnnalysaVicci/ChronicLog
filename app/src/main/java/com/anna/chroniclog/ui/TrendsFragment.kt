@@ -40,7 +40,7 @@ class TrendsFragment : Fragment() {
         // tell the Trends analyst to go get the data
         trendsViewModel.loadSymptomFrequencies()
 
-        // collect the StateFlow data (standard for Kotlin Coroutines)
+        // collect the StateFlow data
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 trendsViewModel.symptomFrequency.collect { frequencyMap ->

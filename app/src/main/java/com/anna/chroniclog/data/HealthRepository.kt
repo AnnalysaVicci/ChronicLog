@@ -35,19 +35,24 @@ class HealthRepository {
             .addOnFailureListener { e -> Log.w("Firestore", "Error saving profile", e) }
     }
 
-    fun loadUserData(onResult: (age: Int?, sex: String?) -> Unit) {
+    fun loadUserData(onResult: (age: Int?, sex: String?, illnessess: List<String>?) -> Unit) {
         val uid = userId ?: return
         db.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
                 if (doc.exists()) {
-                    onResult(doc.getLong("age")?.toInt(), doc.getString("sex"))
+                    val illnesses = doc.get("chronicIllnesses") as? List<String>
+                    onResult(
+                        doc.getLong("age")?.toInt(),
+                        doc.getString("sex"),
+                        illnesses
+                    )
                 } else {
-                    onResult(null, null)
+                    onResult(null, null, null)
                 }
             }
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error loading profile", e)
-                onResult(null, null)
+                onResult(null, null, null)
             }
     }
 
@@ -128,6 +133,7 @@ class HealthRepository {
         val logMap = hashMapOf(
             "id" to log.id,
             "date" to log.date,
+            "timestamp" to log.timestamp,
             "sentiment" to log.sentiment,
             "notes" to log.notes,
             "symptoms" to log.symptoms,
@@ -150,13 +156,16 @@ class HealthRepository {
     fun loadLogs(onResult: (List<LogEntry>) -> Unit) {
         val uid = userId ?: return
         db.collection("users").document(uid)
-            .collection("logs").get()
+            .collection("logs")
+            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .get()
             .addOnSuccessListener { snapshot ->
                 val logs = snapshot.documents.mapNotNull { doc ->
                     try {
                         LogEntry(
                             id = doc.getString("id") ?: doc.id,
                             date = doc.getString("date") ?: "",
+                            timestamp = doc.getLong("timestamp") ?: 0L,
                             sentiment = doc.getString("sentiment") ?: "",
                             notes = doc.getString("notes") ?: ""
                         )
@@ -182,6 +191,24 @@ class HealthRepository {
             .addOnFailureListener { e -> Log.w("Firestore", "Error deleting log", e) }
     }
 
+    // if symptom/remediation gets deleted, need to delete from log
+    fun deleteSymptomFromLog(logId: String, symptomId: String) {
+        val uid = userId ?: return
+        db.collection("users").document(uid)
+            .collection("logs").document(logId)
+            .collection("symptoms").document(symptomId)
+            .delete()
+    }
+
+    fun deleteRemediationFromLog(logId: String, remediationId: String) {
+        val uid = userId ?: return
+        db.collection("users").document(uid)
+            .collection("logs").document(logId)
+            .collection("remediations").document(remediationId)
+            .delete()
+    }
+
+
     // SYMPTOMS (save, load, delete, update)
     private fun saveSymptom(symptom: Symptom, logId: String) {
         val uid = userId ?: return
@@ -189,8 +216,9 @@ class HealthRepository {
             "id" to symptom.id,
             "name" to symptom.name,
             "severity" to symptom.severity,
-            "logId" to logId,
             "imageUri" to symptom.imageUri,
+            "logId" to logId,
+            "timestamp" to symptom.timestamp,
             "userId" to uid
         )
         db.collection("users").document(uid)
@@ -225,6 +253,15 @@ class HealthRepository {
             .addOnFailureListener { e -> Log.w("Firestore", "Error deleting Symptom", e) }
     }
 
+    fun uploadSymptomImage(
+        symptomId: String,
+        localUri: Uri,
+        onSuccess: (String) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val uid = userId ?: return
+        storage.uploadSymptomImage(uid, symptomId, localUri, onSuccess, onFailure)
+    }
     fun getSymptomSummary(onResult: (Map<String, Int>) -> Unit) {
         val uid = userId ?: return
         db.collection("users").document(uid)
@@ -241,7 +278,7 @@ class HealthRepository {
                 }
             }
             .addOnFailureListener { e ->
-                Log.w("Firestore", "Error fetching summary", e)
+                Log.w("Firestore", "Error fetching symptom summary", e)
                 onResult(emptyMap())
             }
     }
@@ -264,16 +301,6 @@ class HealthRepository {
         }
     }
 
-    fun uploadSymptomImage(
-        symptomId: String,
-        localUri: Uri,
-        onSuccess: (String) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        val uid = userId ?: return
-        storage.uploadSymptomImage(uid, symptomId, localUri, onSuccess, onFailure)
-    }
-
 
     // REMEDIATIONS (save, load, delete)
     private fun saveRemediation(remediation: Remediation, logId: String) {
@@ -281,8 +308,10 @@ class HealthRepository {
         val map = hashMapOf(
             "id" to remediation.id,
             "name" to remediation.name,
+            "description" to remediation.description,
             "outcome" to remediation.outcome,
             "logId" to logId,
+            "timestamp" to remediation.timestamp,
             "userId" to uid
         )
         db.collection("users").document(uid)

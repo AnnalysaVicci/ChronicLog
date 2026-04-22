@@ -97,6 +97,8 @@ class EditHealthInformationFragment : Fragment() {
         val ageStr = binding.etAge.text.toString().trim()
         val sex = binding.spinnerSex.selectedItem.toString()
 
+        val currentIllnesses = viewModel.chronicIllnesses.value ?: emptyList()
+
         if (ageStr.isEmpty()) {
             binding.etAge.error = "Please enter your age"
             return
@@ -107,8 +109,8 @@ class EditHealthInformationFragment : Fragment() {
             return
         }
 
-        viewModel.saveUserProfile(age, sex)
-        Toast.makeText(requireContext(), "Health info saved", Toast.LENGTH_SHORT).show()
+        viewModel.saveUserProfile(age, sex, currentIllnesses)
+        Toast.makeText(requireContext(), "Health info updated", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

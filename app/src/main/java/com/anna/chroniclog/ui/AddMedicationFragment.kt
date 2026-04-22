@@ -49,11 +49,12 @@ class AddMedicationFragment : Fragment() {
         freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerFreq.adapter = freqAdapter
 
-        // handle openfda med auto complete
+        // setup adapter for med autocomplete
         val drugAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
         binding.medNameInput.setAdapter(drugAdapter)
         binding.medNameInput.threshold = 2
 
+        // handle openfda med auto complete
         binding.medNameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -68,7 +69,7 @@ class AddMedicationFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
-        // observe results
+        // observe drug search results
         viewModel.drugSuggestions.observe(viewLifecycleOwner) { drugs ->
             drugAdapter.clear()
             drugAdapter.addAll(drugs.map {it.getDisplayName() })
