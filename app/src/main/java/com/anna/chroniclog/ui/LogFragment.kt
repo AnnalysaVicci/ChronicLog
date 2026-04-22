@@ -44,9 +44,13 @@ class LogFragment : Fragment() {
         val logId = args.logId
 
         // setup symptom RecyclerView
+        /*
         symptomAdapter = SymptomAdapter(symptoms) { position ->
             symptoms.removeAt(position)
             symptomAdapter.notifyItemRemoved(position)
+        } */
+        symptomAdapter = SymptomAdapter(symptoms, false) { symptom ->
+            viewModel.removeTempSymptom(symptom.id)
         }
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSymptoms.adapter = symptomAdapter
@@ -63,7 +67,7 @@ class LogFragment : Fragment() {
             remediations.removeAt(position)
             remediationAdapter.notifyItemRemoved(position)
         } */
-        remediationAdapter = RemediationAdapter(remediations) { remediation ->
+        remediationAdapter = RemediationAdapter(remediations, false) { remediation ->
             viewModel.deleteRemediation(remediation.id)
         }
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())

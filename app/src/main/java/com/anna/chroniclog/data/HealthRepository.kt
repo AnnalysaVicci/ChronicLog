@@ -333,15 +333,4 @@ class HealthRepository {
                 onUpdate(messages)
             }
     }
-    /*
-    fun observeChatByTopic(topicId: String, onUpdate: (List<ChatMessage>) -> Unit) {
-        db.collection("chats")
-            .whereEqualTo("topicId", topicId) // Only get messages for this specific topic
-            .orderBy("timestamp")
-            .addSnapshotListener { snapshot, _ ->
-                val messages = snapshot?.toObjects(ChatMessage::class.java) ?: emptyList()
-                onUpdate(messages)
-            }
-    } */
-
 }

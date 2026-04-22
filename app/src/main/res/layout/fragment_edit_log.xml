@@ -32,6 +32,15 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Add Symptom -->
+        <TextView
+            android:id="@+id/tvSymptom"
+            android:text="Symptoms"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvEditDate"
+            app:layout_constraintStart_toStartOf="parent" />
         <Button
             android:id="@+id/btnAddSymptom"
             android:text="+"
@@ -43,7 +52,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEditDate" />
+            app:layout_constraintTop_toBottomOf="@id/tvSymptom" />
         <TextView
             android:id="@+id/tvAddSymptom"
             android:text="Add Symptom"
@@ -65,6 +74,15 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Add Remediation -->
+        <TextView
+            android:id="@+id/tvRemediation"
+            android:text="Remediation"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/rvSymptoms"
+            app:layout_constraintStart_toStartOf="parent" />
         <Button
             android:id="@+id/btnAddRemediation"
             android:text="+"
@@ -74,7 +92,7 @@
             app:cornerRadius="0dp"
             app:layout_constraintStart_toStartOf="@id/btnAddSymptom"
             app:layout_constraintEnd_toEndOf="@id/btnAddSymptom"
-            app:layout_constraintTop_toBottomOf="@id/rvSymptoms"/>
+            app:layout_constraintTop_toBottomOf="@id/tvRemediation"/>
         <TextView
             android:id="@+id/tvAddRemediation"
             android:text="Add Remediation"

@@ -13,7 +13,9 @@ import kotlin.getValue
 
 class MedicationsAdapter(
     private var medications: List<Medication>,
-    private val onItemClick: (Medication) -> Unit
+    private val showDeleteButton: Boolean = true,
+    //private val onItemClick: (Medication) -> Unit,
+    private val onRemove: (Medication) -> Unit
 ) : RecyclerView.Adapter<MedicationsAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemMedicationBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -42,8 +44,9 @@ class MedicationsAdapter(
             tvEndDate.text = if (medication.currentlyTaking) "" else "Ended: ${medication.endDate}"
             tvEndDate.visibility = if (medication.currentlyTaking) View.GONE else View.VISIBLE
 
+            btnDeleteMed.visibility = if (showDeleteButton) View.VISIBLE else View.GONE
             btnDeleteMed.setOnClickListener {
-                //onRemove(holder.bindingAdapterPosition)
+                onRemove(medication)
             }
 
             // hidden Section logic
@@ -54,7 +57,7 @@ class MedicationsAdapter(
             root.setOnClickListener {
                 medication.isExpanded = !medication.isExpanded
                 notifyItemChanged(position)
-                onItemClick(medication)
+                //onItemClick(medication)
             }
         }
     }

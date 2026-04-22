@@ -36,7 +36,7 @@ class ChatFragment : Fragment() {
         binding.rvChat.adapter = adapter
 
         // start the real-time listener
-        //viewModel.startChatService()
+        viewModel.startChatService()
 
         // observe the "Mutable Shared State"
         viewModel.chatMessages.observe(viewLifecycleOwner) { messages ->
@@ -56,7 +56,7 @@ class ChatFragment : Fragment() {
                     text = text,
                     timestamp = System.currentTimeMillis()
                 )
-                //viewModel.sendChatMessage(msg)
+                viewModel.sendChatMessage(msg)
                 binding.etMessage.text.clear()
             }
         }

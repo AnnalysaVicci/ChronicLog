@@ -79,21 +79,14 @@ class HomeFragment : Fragment() {
         }
 
         // setup medication RecyclerView
-        currentMedicationsAdapter = MedicationsAdapter(emptyList()) { medication -> }
+        currentMedicationsAdapter = MedicationsAdapter(emptyList(), false) { medication -> }
         binding.rvCurrentMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
-
-        // want to make medication btnDeleteMed view.GONE
 
         // observe current medications
         viewModel.medications.observe(viewLifecycleOwner) { updatedMeds ->
             currentMedicationsAdapter.updateMedications(updatedMeds.filter { it.currentlyTaking})
         }
-
-        // setup symptom RecyclerView
-        symptomAdapter = SymptomAdapter(emptyList()) { symptom ->}
-        binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvSymptoms.adapter = symptomAdapter
 
     }
 

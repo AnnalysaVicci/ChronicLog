@@ -45,9 +45,12 @@ class HealthInformationFragment : Fragment() {
         } */
 
         // setup symptom RecyclerView
-        symptomAdapter = SymptomAdapter(symptoms) { position ->
+        /* symptomAdapter = SymptomAdapter(symptoms) { position ->
             symptoms.removeAt(position)
             symptomAdapter.notifyItemRemoved(position)
+        } */
+        symptomAdapter = SymptomAdapter(symptoms) { symptom ->
+            viewModel.removeTempSymptom(symptom.id)
         }
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSymptoms.adapter = symptomAdapter

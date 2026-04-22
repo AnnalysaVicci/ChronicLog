@@ -47,7 +47,7 @@ class AddRemediationFragment : Fragment() {
 
         // cancel button
         binding.btnCancel.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
 
         // add button

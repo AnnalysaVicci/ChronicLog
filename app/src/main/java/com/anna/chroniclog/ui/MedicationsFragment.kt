@@ -35,11 +35,15 @@ class MedicationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // setup medications RecyclerView
-        currentMedicationsAdapter = MedicationsAdapter(emptyList()) { medication -> }
+        currentMedicationsAdapter = MedicationsAdapter(emptyList()) { medication ->
+            viewModel.deleteMedication(medication.id)
+        }
         binding.rvCurrentMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentMedications.adapter = currentMedicationsAdapter
 
-        allMedicationsAdapter = MedicationsAdapter(emptyList()) { medication -> }
+        allMedicationsAdapter = MedicationsAdapter(emptyList()) { medication ->
+            viewModel.deleteMedication(medication.id)
+        }
         binding.rvAllMedications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAllMedications.adapter = allMedicationsAdapter
 

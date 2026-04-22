@@ -1,6 +1,7 @@
 package com.anna.chroniclog.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.anna.chroniclog.databinding.ItemSymptomBinding
@@ -8,7 +9,8 @@ import com.anna.chroniclog.model.Symptom
 
 class SymptomAdapter(
     private var symptoms: List<Symptom>,
-    private val onRemove: (Int) -> Unit
+    private val showDeleteButton: Boolean = true,
+    private val onRemove: (Symptom) -> Unit
 ) : RecyclerView.Adapter<SymptomAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemSymptomBinding) :
@@ -27,7 +29,11 @@ class SymptomAdapter(
         holder.binding.apply {
             tvSymptomName.text = symptom.name
             tvSymptomSeverity.text = "${symptom.severity}/10"
-            btnDeleteSymptom.setOnClickListener {onRemove(holder.bindingAdapterPosition)}
+
+            btnDeleteSymptom.visibility = if (showDeleteButton) View.VISIBLE else View.GONE
+            btnDeleteSymptom.setOnClickListener {
+                onRemove(symptom)
+            }
         }
     }
 

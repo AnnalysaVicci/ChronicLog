@@ -1,7 +1,9 @@
 package com.anna.chroniclog.model
 
+import java.util.UUID
+
 data class ChatMessage(
-    val id: String = "",
+    val id: String = UUID.randomUUID().toString(),
     val senderId: String = "",
     val senderName: String = "",
     val text: String = "",

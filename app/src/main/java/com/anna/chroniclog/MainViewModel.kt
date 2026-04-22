@@ -69,9 +69,8 @@ class MainViewModel : ViewModel() {
         loadMedications()
         loadSymptoms()
         loadRemediations()
-        load
         // start chat
-        //startChatService()
+        startChatService()
     }
 
     fun saveUserProfile(age: Int, sex: String) {
@@ -234,7 +233,6 @@ class MainViewModel : ViewModel() {
     }
 
     // CHAT
-    /*
     fun startChatService() {
         healthRepository.observeGeneralChat { messages ->
             _chatMessages.postValue(messages)
@@ -242,5 +240,5 @@ class MainViewModel : ViewModel() {
     }
     fun sendChatMessage(message: ChatMessage) {
         healthRepository.sendMessage(message)
-    } */
+    }
 }
