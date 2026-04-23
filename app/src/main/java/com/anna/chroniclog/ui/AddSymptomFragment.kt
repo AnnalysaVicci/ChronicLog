@@ -1,4 +1,4 @@
-// AddLogFragment - screen where user can add a symptom
+
 package com.anna.chroniclog.ui
 
 import android.net.Uri

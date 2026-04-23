@@ -73,7 +73,7 @@ class AddRemediationFragment : Fragment() {
             outcome = outcome
         )
 
-        if (category.isNotEmpty() and outcome.isNotEmpty() and description.isNotEmpty()) {
+        if (category.isNotEmpty() && description.isNotEmpty()) {
             // save to ViewModel
             viewModel.addTempRemediation(remediation)
             findNavController().popBackStack()

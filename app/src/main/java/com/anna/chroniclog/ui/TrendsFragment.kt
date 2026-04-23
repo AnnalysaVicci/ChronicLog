@@ -56,9 +56,48 @@ class TrendsFragment : Fragment() {
     }
 
     private fun setupChart(frequencyMap: Map<String, Int>) {
+
+        val top3 = frequencyMap.entries
+            .sortedByDescending { it.value }
+            .take(3)
+
         val entries = mutableListOf<BarEntry>()
         val labels = mutableListOf<String>()
 
+        top3.forEachIndexed { index, entry ->
+            entries.add(BarEntry(index.toFloat(), entry.value.toFloat()))
+            labels.add(entry.key.lowercase().replaceFirstChar { it.uppercase() })
+        }
+
+        val dataSet = BarDataSet(entries, "Symptom Frequency").apply {
+            color = Color.parseColor("#6A0DAD")
+            valueTextSize = 14f
+            valueTextColor = Color.BLACK
+        }
+
+        binding.barChart.apply {
+            data = BarData(dataSet).apply {
+                barWidth = 0.5f  // narrower bars with more breathing room
+            }
+            xAxis.apply {
+                valueFormatter = IndexAxisValueFormatter(labels)
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = 1f
+                setDrawGridLines(false)
+                textSize = 13f
+                labelRotationAngle = 0f  // keep labels horizontal since there are only 3
+            }
+            axisRight.isEnabled = false
+            axisLeft.axisMinimum = 0f
+            axisLeft.granularity = 1f
+            description.isEnabled = false
+            legend.isEnabled = false
+            setFitBars(true)  // ensures bars fit nicely in the chart width
+            animateY(400)
+            invalidate()
+        }
+
+        /*
         // convert map to BarEntries
         frequencyMap.entries.forEachIndexed { index, entry ->
             entries.add(BarEntry(index.toFloat(), entry.value.toFloat()))
@@ -79,7 +118,7 @@ class TrendsFragment : Fragment() {
         binding.barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         binding.barChart.xAxis.granularity = 1f
 
-        binding.barChart.invalidate() // Refresh the chart
+        binding.barChart.invalidate() // Refresh the chart */
     }
 
     override fun onDestroyView() {

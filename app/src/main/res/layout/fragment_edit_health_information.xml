@@ -90,7 +90,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cgIllnesses" />
+        app:layout_constraintTop_toBottomOf="@+id/cgIllnesses"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/tvCurrentSymptomsNotice"
         android:text="this info is generated from your data"
@@ -99,7 +100,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvChronicSymptoms" />
+        app:layout_constraintTop_toBottomOf="@+id/tvChronicSymptoms"
+        android:visibility="gone"/>
 
     <!-- not dealing with diagnoses yet
     <TextView

@@ -46,11 +46,7 @@ class EditLogFragment : Fragment() {
 
         val logId = args.logId
 
-        // setup symptom RecyclerView
-        /* symptomAdapter = SymptomAdapter(symptoms) { position ->
-            symptoms.removeAt(position)
-            symptomAdapter.notifyItemRemoved(position)
-        } */
+        // setup adapters
         symptomAdapter = SymptomAdapter(symptoms) { symptom ->
             removedSymptomIds.add(symptom.id)
             viewModel.removeTempSymptom(symptom.id)
@@ -58,18 +54,24 @@ class EditLogFragment : Fragment() {
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSymptoms.adapter = symptomAdapter
 
-        // setup remediation RecyclerView
-        /*
-        remediationAdapter = RemediationAdapter(remediations) { position ->
-            remediations.removeAt(position)
-            remediationAdapter.notifyItemRemoved(position)
-        } */
         remediationAdapter = RemediationAdapter(remediations) { remediation ->
             removedRemediationIds.add(remediation.id)
             viewModel.removeTempRemediation(remediation.id)
         }
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter
+
+        // initialize temp data from current log
+        if (viewModel.tempSymptoms.value.isNullOrEmpty() &&
+            viewModel.tempRemediations.value.isNullOrEmpty()) {
+            val currentLog = viewModel.logs.value?.find { it.id == logId }
+            currentLog?.let { log ->
+                val logSymptoms = viewModel.symptoms.value?.filter { it.logId == logId } ?: emptyList()
+                val logRemediations = viewModel.remediations.value?.filter { it.logId == logId } ?: emptyList()
+                logSymptoms.forEach { viewModel.addTempSymptom(it) }
+                logRemediations.forEach { viewModel.addTempRemediation(it) }
+            }
+        }
 
 
         // observe the logs from the ViewModel
@@ -78,10 +80,6 @@ class EditLogFragment : Fragment() {
             val currentLog = logList.find { it.id == logId }
 
             currentLog?.let { log ->
-
-                // existing symptoms/remediations are added to temp symptoms/remediations
-                log.symptoms.forEach { viewModel.addTempSymptom(it) }
-                log.remediations.forEach { viewModel.addTempRemediation(it) }
 
                 binding.tvDate.text = "Edit Log from ${log.date}"
                 binding.etEditNotes.setText(log.notes)
@@ -98,21 +96,24 @@ class EditLogFragment : Fragment() {
             }
         }
 
-
+        /*
         viewModel.symptoms.observe(viewLifecycleOwner) { allSymptoms ->
             // filter all symptoms to find only those belonging to THIS log
             val filteredSymptoms = allSymptoms.filter { it.logId == logId }
             symptomAdapter.updateSymptoms(filteredSymptoms)
+        } */
+        // observe temp data for RecyclerView
+        viewModel.tempSymptoms.observe(viewLifecycleOwner) { tempSymptoms ->
+            symptomAdapter.updateSymptoms(tempSymptoms)
+        }
+
+        viewModel.tempRemediations.observe(viewLifecycleOwner) { tempRemediations ->
+            remediationAdapter.updateRemediations(tempRemediations)
         }
 
         // Add Symptom Button
         binding.btnAddSymptom.setOnClickListener {
             findNavController().navigate(EditLogFragmentDirections.actionEditLogFragmentToAddSymptomFragment())
-        }
-
-        viewModel.remediations.observe(viewLifecycleOwner) { allRemediations ->
-            val filteredRemediations = allRemediations.filter { it.logId == logId }
-            remediationAdapter.updateRemediations(filteredRemediations)
         }
 
         // Add Remediation Button
@@ -159,8 +160,14 @@ class EditLogFragment : Fragment() {
             return
         }
 
-        val updatedSymptoms = viewModel.tempSymptoms.value ?: emptyList()
-        val updatedRemediations = viewModel.tempRemediations.value ?: emptyList()
+        //val updatedSymptoms = viewModel.tempSymptoms.value ?: emptyList()
+        //val updatedRemediations = viewModel.tempRemediations.value ?: emptyList()
+        val updatedSymptoms = (viewModel.tempSymptoms.value ?: emptyList()).map { symptom ->
+            if (symptom.logId.isEmpty()) symptom.copy(logId = logId) else symptom
+        }
+        val updatedRemediations = (viewModel.tempRemediations.value ?: emptyList()).map { remediation ->
+            if (remediation.logId.isEmpty()) remediation.copy(logId = logId) else remediation
+        }
 
         val originalLog = viewModel.logs.value?.find { it.id == logId }
 
@@ -172,8 +179,18 @@ class EditLogFragment : Fragment() {
         )
 
         if (updatedLog != null) {
-            viewModel.updateLog(updatedLog, removedSymptomIds, removedRemediationIds)
+            updatedSymptoms.forEach { symptom ->
+                if (viewModel.symptoms.value?.none { it.id == symptom.id } == true) {
+                    viewModel.addSymptom(symptom)
+                }
+            }
+            updatedRemediations.forEach { remediation ->
+                if (viewModel.remediations.value?.none { it.id == remediation.id } == true) {
+                    viewModel.addRemediation(remediation)
+                }
+            }
 
+            viewModel.updateLog(updatedLog, removedSymptomIds, removedRemediationIds)
             viewModel.clearTempData()
             findNavController().popBackStack()
         }

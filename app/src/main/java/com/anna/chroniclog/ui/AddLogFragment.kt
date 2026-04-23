@@ -95,15 +95,15 @@ class AddLogFragment : Fragment() {
 
         // observe symptoms from ViewModel
         viewModel.tempSymptoms.observe(viewLifecycleOwner) { updatedList ->
-            symptoms.clear()
-            symptoms.addAll(updatedList)
+            //symptoms.clear()
+            //symptoms.addAll(updatedList)
             symptomAdapter.updateSymptoms(updatedList)
         }
 
         // observe remediations from ViewModel
         viewModel.tempRemediations.observe(viewLifecycleOwner) { updatedList ->
-            remediations.clear()
-            remediations.addAll(updatedList)
+            //remediations.clear()
+            //remediations.addAll(updatedList)
             remediationAdapter.updateRemediations(updatedList)
         }
     }
@@ -145,7 +145,7 @@ class AddLogFragment : Fragment() {
             return
         }
 
-        // save to fire store
+
         val newLog = LogEntry(
             date = dateStr,
             timestamp = logTimestamp,
@@ -156,6 +156,7 @@ class AddLogFragment : Fragment() {
         )
 
         // map symptoms and remediations to include this specific log's ID
+        /*
         val finalSymptoms = symptoms.map {
             it.copy(
                 name = it.name.trim().uppercase(), // for standardization
@@ -164,6 +165,20 @@ class AddLogFragment : Fragment() {
             )
         }
         val finalRemediations = remediations.map {
+            it.copy(
+                logId = newLog.id,
+                timestamp = logTimestamp
+            )
+        } */
+
+        val finalSymptoms = (viewModel.tempSymptoms.value ?: emptyList()).map {
+            it.copy(
+                name = it.name.trim().uppercase(),
+                logId = newLog.id,
+                timestamp = logTimestamp
+            )
+        }
+        val finalRemediations = (viewModel.tempRemediations.value ?: emptyList()).map {
             it.copy(
                 logId = newLog.id,
                 timestamp = logTimestamp

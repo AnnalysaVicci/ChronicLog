@@ -114,7 +114,8 @@ class MainViewModel : ViewModel() {
         val updatedList = currentList + newLog
         _logs.value = updatedList.sortedByDescending { it.timestamp }
 
-        healthRepository.saveLog(newLog)
+        //healthRepository.saveLog(newLog)
+        healthRepository.saveNewLog(newLog)
     }
     private fun loadLogs() {
         healthRepository.loadLogs { logs ->
@@ -151,7 +152,7 @@ class MainViewModel : ViewModel() {
         _remediations.value = _remediations.value?.filterNot { it.id in removedRemediationIds }
     }
 
-    // MEDICATION (add, delete, update, load)
+    // MEDICATION
     fun addMedication(newMed: Medication) {
         val currentList = _medications.value ?: emptyList()
         _medications.value = currentList + newMed

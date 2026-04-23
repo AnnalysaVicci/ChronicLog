@@ -126,7 +126,12 @@ class HealthRepository {
             .addOnFailureListener { e -> Log.w("Firestore", "Error deleting medication", e) }
     }
 
-    // LOGS (save, load, delete)
+    // LOGS
+
+    fun saveNewLog(log: LogEntry) {
+        saveLog(log)
+        updateSymptomSummary(log.symptoms) // only called on first save
+    }
     fun saveLog(log: LogEntry) {
         val uid = userId ?: return
 
@@ -149,8 +154,6 @@ class HealthRepository {
         log.symptoms.forEach { saveSymptom(it, log.id) }
         log.remediations.forEach { saveRemediation(it, log.id) }
 
-        // save symptom to symptom_stats document in firestore
-        updateSymptomSummary(log.symptoms)
     }
 
     fun loadLogs(onResult: (List<LogEntry>) -> Unit) {
@@ -210,7 +213,7 @@ class HealthRepository {
 
 
     // SYMPTOMS (save, load, delete, update)
-    private fun saveSymptom(symptom: Symptom, logId: String) {
+    fun saveSymptom(symptom: Symptom, logId: String) {
         val uid = userId ?: return
         val map = hashMapOf(
             "id" to symptom.id,
@@ -303,7 +306,7 @@ class HealthRepository {
 
 
     // REMEDIATIONS (save, load, delete)
-    private fun saveRemediation(remediation: Remediation, logId: String) {
+    fun saveRemediation(remediation: Remediation, logId: String) {
         val uid = userId ?: return
         val map = hashMapOf(
             "id" to remediation.id,
