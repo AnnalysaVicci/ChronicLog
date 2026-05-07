@@ -47,8 +47,10 @@ class TrendsFragment : Fragment() {
                     if (frequencyMap.isNotEmpty()) {
                         setupChart(frequencyMap)
                         binding.cardFrequencyChart.visibility = View.VISIBLE
+                        binding.tvTrendNotif.visibility = View.GONE
                     } else {
                         binding.cardFrequencyChart.visibility = View.GONE
+                        binding.tvTrendNotif.visibility = View.VISIBLE
                     }
                 }
             }

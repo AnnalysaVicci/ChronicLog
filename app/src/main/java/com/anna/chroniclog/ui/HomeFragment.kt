@@ -40,9 +40,12 @@ class HomeFragment : Fragment() {
 
         // Greet User
         val user = FirebaseAuth.getInstance().currentUser
-        binding.tvGreetUser.text = "Welcome, ${user?.displayName ?: user?.email}!"
+        binding.tvAvatarInitials.text = user?.displayName?.firstOrNull()?.uppercaseChar()?.toString() ?: "?"
+        binding.tvGreetUser.text = "Hi, ${user?.displayName}!"
+
 
         trendsViewModel.loadSymptomFrequencies()
+
         // Provider Share Button
         binding.btnProviderShare.setOnClickListener {
             shareMedicalReport()
@@ -55,10 +58,10 @@ class HomeFragment : Fragment() {
 
         // observe user's age and sex
         viewModel.userAge.observe(viewLifecycleOwner) { age ->
-            binding.tvAge.text = "Age: $age"
+            binding.tvAge.text = age.toString()
         }
         viewModel.userSex.observe(viewLifecycleOwner) { sex ->
-            binding.tvSex.text = "Sex: $sex"
+            binding.tvSex.text = sex
         }
         viewModel.chronicIllnesses.observe(viewLifecycleOwner) { illnesses ->
             binding.cgHomeIllnesses.removeAllViews()

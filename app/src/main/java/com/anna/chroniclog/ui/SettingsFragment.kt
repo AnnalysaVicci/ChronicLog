@@ -14,7 +14,6 @@ import com.anna.chroniclog.databinding.FragmentSettingsBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class SettingsFragment : Fragment() {
-    // https://developer.android.com/topic/libraries/view-binding#fragments
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
@@ -42,8 +41,8 @@ class SettingsFragment : Fragment() {
         initMenu()
 
         val user = FirebaseAuth.getInstance().currentUser
-        binding.tvUsername.text = if (user?.displayName.isNullOrEmpty()) "No Username" else "Logged in User: ${user.displayName}"
-        binding.tvEmail.text = "User email: ${user?.email}"
+        binding.tvUsername.text = if (user?.displayName.isNullOrEmpty()) "No Username" else user.displayName
+        binding.tvEmail.text = user?.email
 
         binding.btnLogOut.setOnClickListener {
             // signout of firebase

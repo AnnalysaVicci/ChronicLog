@@ -31,7 +31,8 @@
         <!-- MainActivity is navigated to after login -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- For Photo Capabilities -->
         <provider

@@ -1,6 +1,8 @@
 // AddLogFragment - screen where user can add a log
 package com.anna.chroniclog.ui
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,9 +27,9 @@ class AddLogFragment : Fragment() {
     private val binding get() = _binding!!
     private var symptoms = mutableListOf<Symptom>()
     private var remediations = mutableListOf<Remediation>()
-
     private lateinit var symptomAdapter: SymptomAdapter
     private lateinit var remediationAdapter: RemediationAdapter
+    private var selectedLogDate: Calendar = Calendar.getInstance()
     private val viewModel: MainViewModel by activityViewModels()
 
 
@@ -41,35 +43,36 @@ class AddLogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // user cannot pick future date
-        binding.datePicker.maxDate = System.currentTimeMillis()
+        // set initial date button text to today's date
+        binding.btnDate.text = formatDate(selectedLogDate)
 
-        // setup symptom RecyclerView
-        /*symptomAdapter = SymptomAdapter(symptoms) { position ->
-            symptoms.removeAt(position)
-            symptomAdapter.notifyItemRemoved(position)
-        } */
+        // setup log date
+        binding.btnDate.setOnClickListener {
+            showDatePicker { calendar ->
+                selectedLogDate = calendar
+                binding.btnDate.text = formatDate(calendar)
+            }
+        }
+
+        // setup symptom adapter and rv
         symptomAdapter = SymptomAdapter(symptoms) { symptom ->
             viewModel.removeTempSymptom(symptom.id)
         }
         binding.rvSymptoms.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSymptoms.adapter = symptomAdapter
+        binding.rvSymptoms.isNestedScrollingEnabled = false
 
         binding.btnAddSymptom.setOnClickListener {
             findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddSymptomFragment())
         }
 
-        // setup remediation RecyclerView
-        /*
-        remediationAdapter = RemediationAdapter(remediations) { position ->
-            remediations.removeAt(position)
-            remediationAdapter.notifyItemRemoved(position)
-        } */
+        // setup remediation adapter and RecyclerView
         remediationAdapter = RemediationAdapter(remediations) { remediation ->
             viewModel.removeTempRemediation(remediation.id)
         }
         binding.rvRemediations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvRemediations.adapter = remediationAdapter
+        binding.rvRemediations.isNestedScrollingEnabled = false
 
         binding.btnAddRemediation.setOnClickListener {
             findNavController().navigate(AddLogFragmentDirections.actionAddLogFragmentToAddRemediationFragment())
@@ -108,18 +111,43 @@ class AddLogFragment : Fragment() {
         }
     }
 
+    private fun showDatePicker(onDateSelected: (Calendar) -> Unit) {
+        val c = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, y, m, d ->
+                val result = Calendar.getInstance().apply { set(y, m, d) }
+                onDateSelected(result)
+            },
+            c.get(Calendar.YEAR),
+            c.get(Calendar.MONTH),
+            c.get(Calendar.DAY_OF_MONTH)
+        )
+        // Prevent picking future dates
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+        datePickerDialog.show()
+    }
+
+    private fun formatDate(date: Calendar): String {
+        val month = date.get(Calendar.MONTH) + 1
+        val day = date.get(Calendar.DAY_OF_MONTH)
+        val year = date.get(Calendar.YEAR)
+        return "$month/$day/$year"
+    }
+
     fun saveLog() {
         // new log data
-        val datePicker = binding.datePicker
+        //val datePicker = binding.datePicker
+        //val calendar = java.util.Calendar.getInstance()
+        //calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth, 0, 0, 0)
+        //val logTimestamp = calendar.timeInMillis
+        //val year = datePicker.year
+        //val month = datePicker.month + 1
+        //val day = datePicker.dayOfMonth
+        //val dateStr = "$month/$day/$year"
 
-        val calendar = java.util.Calendar.getInstance()
-        calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth, 0, 0, 0)
-        val logTimestamp = calendar.timeInMillis
-
-        val year = datePicker.year
-        val month = datePicker.month + 1
-        val day = datePicker.dayOfMonth
-        val dateStr = "$month/$day/$year"
+        val dateStr = formatDate(selectedLogDate)
+        val logTimestamp = selectedLogDate.timeInMillis
 
         // check if log already exists for this day
         val existingLogs = viewModel.logs.value ?: emptyList()
@@ -138,39 +166,34 @@ class AddLogFragment : Fragment() {
             binding.mood5.id -> "\uD83D\uDE00" //"Amazing"
             else -> ""
         }
-        val notes = binding.etEditNotes.text.toString().trim()
 
         if (mood.isEmpty()) {
             Toast.makeText(requireContext(), "Please rate your day", Toast.LENGTH_SHORT).show()
             return
         }
 
+        val notes = binding.etEditNotes.text.toString().trim()
+
+        // Create log entry using temp data from ViewModel
+        //val currentSymptoms = viewModel.tempSymptoms.value ?: emptyList()
+        //val currentRemediations = viewModel.tempRemediations.value ?: emptyList()
 
         val newLog = LogEntry(
             date = dateStr,
             timestamp = logTimestamp,
             symptoms = symptoms,
+            //symptoms = currentSymptoms.map { it.copy(timestamp = logTimestamp) },
             remediations = remediations,
+            //remediations = currentRemediations.map { it.copy(timestamp = logTimestamp) },
             sentiment = mood,
             notes = notes
         )
 
-        // map symptoms and remediations to include this specific log's ID
-        /*
-        val finalSymptoms = symptoms.map {
-            it.copy(
-                name = it.name.trim().uppercase(), // for standardization
-                logId = newLog.id,
-                timestamp = logTimestamp
-            )
-        }
-        val finalRemediations = remediations.map {
-            it.copy(
-                logId = newLog.id,
-                timestamp = logTimestamp
-            )
-        } */
+        //viewModel.addLog(newLog)
+        //viewModel.clearTempData()
+        //findNavController().popBackStack()
 
+        // map symptoms and remediations to include this specific log's ID
         val finalSymptoms = (viewModel.tempSymptoms.value ?: emptyList()).map {
             it.copy(
                 name = it.name.trim().uppercase(),

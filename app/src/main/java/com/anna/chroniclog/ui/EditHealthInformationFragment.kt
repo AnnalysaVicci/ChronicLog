@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -38,16 +40,14 @@ class EditHealthInformationFragment : Fragment() {
             "Endometriosis", "POTS", "Ehlers-Danlos Syndrome"
         )
 
-        // autocomplete adapter
+        // autocomplete for illness search
         val issuesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, commonConditions)
         binding.atvIllness.setAdapter(issuesAdapter)
 
         // observe current illnesses to build Chips
         viewModel.chronicIllnesses.observe(viewLifecycleOwner) { illnesses ->
             binding.cgIllnesses.removeAllViews()
-            illnesses.forEach { illness ->
-                addIllnessChip(illness)
-            }
+            illnesses.forEach { addIllnessChip(it) }
         }
         binding.btnAddIllness.setOnClickListener {
             val text = binding.atvIllness.text.toString().trim()
@@ -57,19 +57,18 @@ class EditHealthInformationFragment : Fragment() {
             }
         }
 
-
         val sexOptions = listOf("Female", "Male", "Non-binary", "Other")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSex.adapter = adapter
 
-        viewModel.userAge.value?.let { age ->
-            binding.etAge.setText(age.toString())
-        }
-
         viewModel.userSex.value?.let { sex ->
             val index = sexOptions.indexOf(sex)
             if (index >= 0) binding.spinnerSex.setSelection(index)
+        }
+
+        viewModel.userAge.value?.let { age ->
+            binding.etAge.setText(age.toString())
         }
 
         binding.btnCancel.setOnClickListener {
@@ -82,6 +81,7 @@ class EditHealthInformationFragment : Fragment() {
         }
     }
 
+    /*
     private fun addIllnessChip(text: String) {
         val chip = Chip(requireContext()).apply {
             this.text = text
@@ -91,23 +91,35 @@ class EditHealthInformationFragment : Fragment() {
             }
         }
         binding.cgIllnesses.addView(chip)
+    } */
+    private fun addIllnessChip(text: String) {
+        val chip = Chip(requireContext()).apply {
+            this.text = text
+            isCloseIconVisible = true
+            setChipBackgroundColorResource(com.google.android.material.R.color.material_dynamic_primary90)
+            setTextColor(ContextCompat.getColor(requireContext(), com.google.android.material.R.color.material_dynamic_primary10))
+            setOnCloseIconClickListener {
+                viewModel.removeChronicIllness(text)
+            }
+        }
+        binding.cgIllnesses.addView(chip)
     }
 
     private fun saveHealthInfo() {
-        val ageStr = binding.etAge.text.toString().trim()
         val sex = binding.spinnerSex.selectedItem.toString()
-
         val currentIllnesses = viewModel.chronicIllnesses.value ?: emptyList()
+        val ageStr = binding.etAge.text.toString().trim()
 
         if (ageStr.isEmpty()) {
-            binding.etAge.error = "Please enter your age"
+            binding.tilAge.error = "Please enter your age"
             return
         }
         val age = ageStr.toIntOrNull()
         if (age == null || age <= 0 || age > 120) {
-            binding.etAge.error = "Please enter a valid age"
+            binding.tilAge.error = "Please enter a valid age"
             return
         }
+        binding.tilAge.error = null
 
         viewModel.saveUserProfile(age, sex, currentIllnesses)
         Toast.makeText(requireContext(), "Health info updated", Toast.LENGTH_SHORT).show()
